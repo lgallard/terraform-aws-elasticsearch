@@ -2,6 +2,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   domain_name           = var.domain_name
   elasticsearch_version = var.es_version
 
+  # cluster_config
   dynamic "cluster_config" {
     for_each = local.cluster_configs
     content {
@@ -23,12 +24,27 @@ resource "aws_elasticsearch_domain" "es_domain" {
     }
   }
 
+  access_policies = var.access_policies
+
+  # ebs_options
+  dynamic "ebs_options" {
+    for_each = local.ebs_options
+    content {
+      ebs_enabled = lookup(ebs_options.value, "ebs_enabled ", var.ebs_enabled)
+      volume_type = lookup(ebs_options.value, "volume_type ", var.ebs_options_volume_type)
+      volume_size = lookup(ebs_options.value, "volume_size", var.ebs_options_volume_size)
+      iops        = lookup(ebs_options.value, "iops", var.ebs_options_iops)
+
+
+    }
+  }
+
 }
 
 locals {
 
   # If no cluster_config list is provided, build a cluster_config using the default values
-  cluster_config = var.cluster_config != null ? [] : [
+  cluster_config = var.cluster_config == null ? [] : [
     {
 
       instance_type            = var.cluster_instance_type
@@ -46,5 +62,17 @@ locals {
   }]
 
   cluster_configs = concat(local.cluster_config, var.cluster_config)
+
+  # If no ebs_options list is provided, build a ebs_options using the default values
+  ebs_option = var.ebs_options == null || var.ebs_enabled == false ? [] : [
+    {
+
+      ebs_enabled = var.ebs_enabled
+      volume_type = var.ebs_options_volume_type
+      volume_size = var.ebs_options_volume_size
+      iops        = var.ebs_options_iops
+  }]
+
+  ebs_options = concat(local.ebs_option, var.ebs_options)
 
 }

@@ -48,3 +48,30 @@ variable "cluster_availability_zone_count" {
   type        = number
   default     = 3
 }
+
+variable "access_policies" {
+  description = "IAM policy document specifying the access policies for the domain"
+  default     = ""
+}
+
+
+# ebs_options
+variable "ebs_enabled" {
+  description = "Whether EBS volumes are attached to data nodes in the domain"
+  default     = true
+}
+
+variable "ebs_options_volume_type" {
+  description = "The type of EBS volumes attached to data nodes"
+  default     = "gp2"
+}
+
+variable "ebs_options_volume_size" {
+  description = "The size of EBS volumes attached to data nodes (in GB). Required if ebs_enabled is set to true"
+  default     = 10
+}
+
+variable "ebs_options_iops" {
+  description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
+  default     = 0
+}
