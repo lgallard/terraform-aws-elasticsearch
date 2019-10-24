@@ -6,10 +6,10 @@ variable "domain_name" {
   type        = string
 }
 
-variable "es_version" {
+variable "elasticsearch_version" {
   description = "The version of Elasticsearch to deploy."
   type        = string
-  defualt     = "7.1"
+  default     = "7.1"
 }
 
 variable "access_policies" {
@@ -95,40 +95,46 @@ variable "cluster_config" {
   default     = {}
 }
 
-variable "cluster_instance_type" {
+variable "cluster_config_instance_type" {
   description = "Instance type of data nodes in the cluster"
   type        = string
   default     = "r5.large.elasticsearch"
 }
 
-variable "cluster_instance_count" {
+variable "cluster_config_instance_count" {
   description = "Number of instances in the cluster"
   type        = number
   default     = 3
 }
 
-variable "cluster_dedicated_master_enabled" {
+variable "cluster_config_dedicated_master_enabled" {
   description = "Indicates whether dedicated master nodes are enabled for the cluster"
   type        = bool
   default     = true
 }
 
-variable "cluster_dedicated_master_type" {
+variable "cluster_config_dedicated_master_type" {
   description = "Instance type of the dedicated master nodes in the cluster"
   type        = string
   default     = "r5.large.elasticsearch"
 }
 
-variable "cluster_dedicated_master_count" {
+variable "cluster_config_dedicated_master_count" {
   description = "Number of dedicated master nodes in the cluster"
   type        = number
   default     = 3
 }
 
-variable "cluster_availability_zone_count" {
+variable "cluster_config_availability_zone_count" {
   description = "Number of Availability Zones for the domain to use with"
   type        = number
   default     = 3
+}
+
+variable "cluster_config_zone_awareness_enabled" {
+  description = "Indicates whether zone awareness is enabled. To enable awareness with three Availability Zones"
+  type        = bool
+  default     = false
 }
 
 # snapshot_options
@@ -201,7 +207,7 @@ variable "cognito_options_enabled" {
   default     = true
 }
 
-variable "cognito_options_user_pool_id " {
+variable "cognito_options_user_pool_id" {
   description = "ID of the Cognito User Pool to use"
   type        = string
   default     = ""
@@ -209,6 +215,11 @@ variable "cognito_options_user_pool_id " {
 
 variable "cognito_options_identity_pool_id" {
   description = "ID of the Cognito Identity Pool to use"
+  type        = string
+  default     = ""
+}
+variable "cognito_options_role_arn" {
+  description = "ARN of the IAM role that has the AmazonESCognitoAccess policy attached"
   type        = string
   default     = ""
 }

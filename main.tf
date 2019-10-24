@@ -3,7 +3,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   domain_name = var.domain_name
 
   # ElasticSeach version
-  elasticsearch_version = var.es_version
+  elasticsearch_version = var.elasticsearch_version
 
   # access_policies
   access_policies = var.access_policies
@@ -15,8 +15,8 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "ebs_options" {
     for_each = local.ebs_options
     content {
-      ebs_enabled = lookup(ebs_options.value, "ebs_enabled ", var.ebs_enabled)
-      volume_type = lookup(ebs_options.value, "volume_type ", var.ebs_options_volume_type)
+      ebs_enabled = lookup(ebs_options.value, "ebs_enabled", var.ebs_enabled)
+      volume_type = lookup(ebs_options.value, "volume_type", var.ebs_options_volume_type)
       volume_size = lookup(ebs_options.value, "volume_size", var.ebs_options_volume_size)
       iops        = lookup(ebs_options.value, "iops", var.ebs_options_iops)
     }
@@ -26,8 +26,8 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "encrypt_at_rest" {
     for_each = local.encrypt_at_rest
     content {
-      enabled    = lookup(encrypt_at_rest.value, "enabled ", var.encrypt_at_rest_enabled)
-      kms_key_id = lookup(encrypt_at_rest.value, "kms_key_id ", var.encrypt_at_rest_kms_key_id)
+      enabled    = lookup(encrypt_at_rest.value, "enabled", var.encrypt_at_rest_enabled)
+      kms_key_id = lookup(encrypt_at_rest.value, "kms_key_id", var.encrypt_at_rest_kms_key_id)
     }
   }
 
@@ -35,7 +35,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "node_to_node_encryption" {
     for_each = local.node_to_node_encryption
     content {
-      enabled = lookup(node_to_node_encryption.value, "enabled ", var.node_to_node_encryption)
+      enabled = lookup(node_to_node_encryption.value, "enabled ", var.node_to_node_encryption_enabled)
     }
   }
 
@@ -43,18 +43,18 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "cluster_config" {
     for_each = local.cluster_config
     content {
-      instance_type            = lookup(cluster_config.value, "instance_type", var.cluster_instance_type)
-      instance_count           = lookup(cluster_config.value, "instance_count", var.cluster_instance_count)
-      dedicated_master_enabled = lookup(cluster_config.value, "dedicated_master_enabled", var.cluster_dedicated_master_enabled)
-      dedicated_master_type    = lookup(cluster_config.value, "dedicated_master_type", var.cluster_dedicated_master_type)
-      dedicated_master_count   = lookup(cluster_config.value, "dedicated_master_count", var.cluster_dedicated_master_count)
-      zone_awareness_enabled   = lookup(cluster_config.value, "zone_awareness_enabled ", var.cluster_zone_awareness_enabled)
+      instance_type            = lookup(cluster_config.value, "instance_type", var.cluster_config_instance_type)
+      instance_count           = lookup(cluster_config.value, "instance_count", var.cluster_config_instance_count)
+      dedicated_master_enabled = lookup(cluster_config.value, "dedicated_master_enabled", var.cluster_config_dedicated_master_enabled)
+      dedicated_master_type    = lookup(cluster_config.value, "dedicated_master_type", var.cluster_config_dedicated_master_type)
+      dedicated_master_count   = lookup(cluster_config.value, "dedicated_master_count", var.cluster_config_dedicated_master_count)
+      zone_awareness_enabled   = lookup(cluster_config.value, "zone_awareness_enabled", var.cluster_config_zone_awareness_enabled)
 
-      # zone_awareness_config
       dynamic "zone_awareness_config" {
-        for_each = lookup(cluster_config.value, "zone_awareness_enabled ", var.cluster_zone_awareness_enabled) == false || length(lookup(cluster_config.value, "zone_awareness_config")) == 0 || lookup(cluster_config.value, "zone_awareness_config") == null ? [] : [lookup(cluster_configs.value, "zone_awareness_config", {})]
+        # cluster_availability_zone_count valid values: 2 or 3.
+        for_each = lookup(cluster_config.value, "zone_awareness_enabled", "false") == "false" || ! contains(["2", "3"], lookup(cluster_config.value, "availability_zone_count", "1")) ? [] : [1]
         content {
-          availability_zone_count = lookup(zone_awareness_config.value, "availability_zone_count", var.cluster_availability_zone_count)
+          availability_zone_count = lookup(cluster_config.value, "availability_zone_count", var.cluster_config_availability_zone_count)
         }
       }
     }
@@ -111,16 +111,21 @@ locals {
     iops        = var.ebs_options_iops
   }
 
-  ebs_options = lookup(local.ebs_option_default, "ebs_enabled", false) == false ? [] : [ebs_option_default]
+  ebs_options = lookup(local.ebs_option_default, "ebs_enabled", false) == false ? [] : [local.ebs_option_default]
 
   # encrypt_at_rest
   # If no encrypt_at_rest list is provided, build a encrypt_at_rest using the default values
-  encrypt_at_rest_default = var.encrypt_at_rest != null ? var.encrypt_at_rest : {
+  encrypt_at_rest_parsed = {
+    enabled    = lookup(var.encrypt_at_rest, "enabled", null) == null ? var.encrypt_at_rest_enabled : lookup(var.encrypt_at_rest, "enabled")
+    kms_key_id = lookup(var.encrypt_at_rest, "kms_key_id", null) == null ? var.encrypt_at_rest_kms_key_id : lookup(var.encrypt_at_rest, "kms_key_id")
+  }
+
+  encrypt_at_rest_default = var.encrypt_at_rest != null ? local.encrypt_at_rest_parsed : {
     enabled    = var.encrypt_at_rest_enabled
     kms_key_id = var.encrypt_at_rest_kms_key_id
   }
 
-  encrypt_at_rest = lookup(local.encrypt_at_rest_default, "enabled", false) == false ? [] : [local.encrypt_at_rest_default]
+  encrypt_at_rest = local.encrypt_at_rest_default == {} || lookup(local.encrypt_at_rest_default, "enabled", "false") == "false" || var.encrypt_at_rest_enabled == false ? [] : [local.encrypt_at_rest_default]
 
   # node_to_node_encryption
   # If no node_to_node_encryption list is provided, build a node_to_node_encryption using the default values
@@ -133,20 +138,16 @@ locals {
   # cluster_config
   # If no cluster_config list is provided, build a cluster_config using the default values
   cluster_config_default = var.cluster_config != null ? var.cluster_config : {
-    instance_type            = var.cluster_instance_type
-    instance_count           = var.cluster_instance_count
-    dedicated_master_enabled = var.cluster_dedicated_master_enabled
-    dedicated_master_type    = var.cluster_dedicated_master_type
-    dedicated_master_count   = var.cluster_dedicated_master_count
-
-    # cluster_availability_zone_count valid values: 2 or 3.
-    zone_awareness_config = ! contains([2, 3], var.cluster_availability_zone_count) ? {} : {
-      availability_zone_count = var.cluster_availability_zone_count
-      zone_awareness_enabled  = true
-    }
+    instance_type            = var.cluster_config_instance_type
+    instance_count           = var.cluster_config_instance_count
+    dedicated_master_enabled = var.cluster_config_dedicated_master_enabled
+    dedicated_master_type    = var.cluster_config_dedicated_master_type
+    dedicated_master_count   = var.cluster_config_dedicated_master_count
+    zone_awareness_enabled   = var.cluster_config_zone_awareness_enabled
+    availability_zone_count  = var.cluster_config_availability_zone_count
   }
 
-  cluster_config = [cluster_config_default]
+  cluster_config = [local.cluster_config_default]
 
   # snapshot_options
   # If no snapshot_options list is provided, build a snapshot_options using the default values
