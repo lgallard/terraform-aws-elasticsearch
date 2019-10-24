@@ -15,10 +15,10 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "ebs_options" {
     for_each = local.ebs_options
     content {
-      ebs_enabled = lookup(ebs_options.value, "ebs_enabled", var.ebs_enabled)
-      volume_type = lookup(ebs_options.value, "volume_type", var.ebs_options_volume_type)
-      volume_size = lookup(ebs_options.value, "volume_size", var.ebs_options_volume_size)
-      iops        = lookup(ebs_options.value, "iops", var.ebs_options_iops)
+      ebs_enabled = lookup(ebs_options.value, "ebs_enabled")
+      volume_type = lookup(ebs_options.value, "volume_type")
+      volume_size = lookup(ebs_options.value, "volume_size")
+      iops        = lookup(ebs_options.value, "iops")
     }
   }
 
@@ -26,8 +26,8 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "encrypt_at_rest" {
     for_each = local.encrypt_at_rest
     content {
-      enabled    = lookup(encrypt_at_rest.value, "enabled", var.encrypt_at_rest_enabled)
-      kms_key_id = lookup(encrypt_at_rest.value, "kms_key_id", var.encrypt_at_rest_kms_key_id)
+      enabled    = lookup(encrypt_at_rest.value, "enabled")
+      kms_key_id = lookup(encrypt_at_rest.value, "kms_key_id")
     }
   }
 
@@ -104,25 +104,20 @@ locals {
 
   # ebs_options
   # If no ebs_options is provided, build a ebs_options using the default values
-  ebs_option_default = var.ebs_options != null ? var.ebs_options : {
-    ebs_enabled = var.ebs_enabled
-    volume_type = var.ebs_options_volume_type
-    volume_size = var.ebs_options_volume_size
-    iops        = var.ebs_options_iops
+  ebs_option_default = {
+    ebs_enabled = lookup(var.ebs_options, "ebs_enabled", null) == null ? var.ebs_enabled : lookup(var.ebs_options, "ebs_enabled")
+    volume_type = lookup(var.ebs_options, "volume_type", null) == null ? var.ebs_options_volume_type : lookup(var.ebs_options, "volume_type")
+    volume_size = lookup(var.ebs_options, "volume_size", null) == null ? var.ebs_options_volume_size : lookup(var.ebs_options, "volume_size")
+    iops        = lookup(var.ebs_options, "iops", null) == null ? var.ebs_options_iops : lookup(var.ebs_options, "iops")
   }
 
-  ebs_options = lookup(local.ebs_option_default, "ebs_enabled", false) == false ? [] : [local.ebs_option_default]
+  ebs_options = local.ebs_option_default == {} || lookup(local.ebs_option_default, "ebs_enabled", "false") == "false" || var.ebs_enabled == false ? [] : [local.ebs_option_default]
 
   # encrypt_at_rest
   # If no encrypt_at_rest list is provided, build a encrypt_at_rest using the default values
-  encrypt_at_rest_parsed = {
+  encrypt_at_rest_default = {
     enabled    = lookup(var.encrypt_at_rest, "enabled", null) == null ? var.encrypt_at_rest_enabled : lookup(var.encrypt_at_rest, "enabled")
     kms_key_id = lookup(var.encrypt_at_rest, "kms_key_id", null) == null ? var.encrypt_at_rest_kms_key_id : lookup(var.encrypt_at_rest, "kms_key_id")
-  }
-
-  encrypt_at_rest_default = var.encrypt_at_rest != null ? local.encrypt_at_rest_parsed : {
-    enabled    = var.encrypt_at_rest_enabled
-    kms_key_id = var.encrypt_at_rest_kms_key_id
   }
 
   encrypt_at_rest = local.encrypt_at_rest_default == {} || lookup(local.encrypt_at_rest_default, "enabled", "false") == "false" || var.encrypt_at_rest_enabled == false ? [] : [local.encrypt_at_rest_default]
