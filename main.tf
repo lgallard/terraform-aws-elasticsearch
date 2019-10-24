@@ -82,7 +82,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
     for_each = local.log_publishing_options
     content {
       log_type                 = lookup(log_publishing_options.value, "log_type", var.log_publishing_options_log_type)
-      cloudwatch_log_group_arn = lookup(log_publishing_options.value, "cloudwatch_log_group_arn", var.log_publishing_options_cloudwatch_log_group_arn)
+      cloudwatch_log_group_arn = lookup(log_publishing_options.value, "cloudwatch_log_group_arn", aws_cloudwatch_log_group.es_cloudwatch_log_group.arn)
       enabled                  = lookup(log_publishing_options.value, "enabled", var.log_publishing_options_enabled)
     }
   }
@@ -169,7 +169,7 @@ locals {
   # If no log_publishing_options list is provided, build a log_publishing_options using the default values
   log_publishing_options_default = var.log_publishing_options != null ? var.log_publishing_options : {
     log_type                 = var.log_publishing_options_log_type
-    cloudwatch_log_group_arn = var.log_publishing_options_cloudwatch_log_group_arn
+    cloudwatch_log_group_arn = var.log_publishing_options_cloudwatch_log_group_arn == "" ? aws_cloudwatch_log_group.es_cloudwatch_log_group.arn : var.log_publishing_options_cloudwatch_log_group_arn
     enabled                  = var.log_publishing_options_enabled
   }
 
