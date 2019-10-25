@@ -5,6 +5,9 @@ module "aws_es" {
   domain_name           = "elasticsearch_public"
   elasticsearch_version = "7.1"
 
+  encrypt_at_rest_enabled                        = "true"
+  node_to_node_encryption_enabled                = "true"
+  snapshot_options_automated_snapshot_start_hour = "23"
 
   cluster_config = {
     dedicated_master_enabled = "true"
@@ -17,18 +20,6 @@ module "aws_es" {
   ebs_options = {
     ebs_enabled = "true"
     volume_size = "25"
-  }
-
-  encrypt_at_rest = {
-    enabled = "true"
-  }
-
-  node_to_node_encryption = {
-    enabled = "true"
-  }
-
-  snapshot_options = {
-    automated_snapshot_start_hour = "23"
   }
 
   log_publishing_options = {
