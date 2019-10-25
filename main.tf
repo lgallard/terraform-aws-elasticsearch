@@ -118,9 +118,10 @@ locals {
 
   # encrypt_at_rest
   # If no encrypt_at_rest list is provided, build a encrypt_at_rest using the default values
+
   encrypt_at_rest_default = {
     enabled    = lookup(var.encrypt_at_rest, "enabled", null) == null ? var.encrypt_at_rest_enabled : lookup(var.encrypt_at_rest, "enabled")
-    kms_key_id = lookup(var.encrypt_at_rest, "kms_key_id", null) == null ? var.encrypt_at_rest_kms_key_id : lookup(var.encrypt_at_rest, "kms_key_id")
+    kms_key_id = lookup(var.encrypt_at_rest, "kms_key_id", null) == null ? data.aws_kms_key.aws_es.arn : lookup(var.encrypt_at_rest, "kms_key_id")
   }
 
   encrypt_at_rest = var.encrypt_at_rest_enabled == false || lookup(local.encrypt_at_rest_default, "enabled", "false") == "false" ? [] : [local.encrypt_at_rest_default]
