@@ -72,7 +72,7 @@ variable "encrypt_at_rest_enabled" {
 variable "encrypt_at_rest_kms_key_id" {
   description = "The KMS key id to encrypt the Elasticsearch domain with. If not specified then it defaults to using the aws/es service KMS key"
   type        = string
-  default     = "aws/es"
+  default     = "alias/aws/es"
 }
 
 # node_to_node_encryption
