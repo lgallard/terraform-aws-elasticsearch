@@ -204,7 +204,7 @@ variable "cognito_options" {
 variable "cognito_options_enabled" {
   description = "Specifies whether Amazon Cognito authentication with Kibana is enabled or not"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "cognito_options_user_pool_id" {
