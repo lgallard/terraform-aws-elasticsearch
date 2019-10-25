@@ -64,7 +64,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "snapshot_options" {
     for_each = local.snapshot_options
     content {
-      automated_snapshot_start_hour = lookup(snapshot_options.value, "automated_snapshot_start_hour", var.snapshot_options_automated_snapshot_start_hour)
+      automated_snapshot_start_hour = lookup(snapshot_options.value, "automated_snapshot_start_hour")
     }
   }
 
@@ -146,8 +146,8 @@ locals {
 
   # snapshot_options
   # If no snapshot_options list is provided, build a snapshot_options using the default values
-  snapshot_options_default = var.snapshot_options != null ? var.snapshot_options : {
-    automated_snapshot_start_hour = var.snapshot_options_automated_snapshot_start_hour
+  snapshot_options_default = {
+    automated_snapshot_start_hour = lookup(var.snapshot_options, "automated_snapshot_start_hour", null) == null ? var.snapshot_options_automated_snapshot_start_hour : lookup(var.snapshot_options, "automated_snapshot_start_hour")
   }
 
   snapshot_options = [local.snapshot_options_default]
