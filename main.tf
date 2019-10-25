@@ -72,8 +72,8 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "vpc_options" {
     for_each = local.vpc_options
     content {
-      security_group_ids = lookup(vpc_options.value, "security_group_ids", var.vpc_options_security_group_ids)
-      subnet_ids         = lookup(vpc_options.value, "subnet_ids", var.vpc_options_subnet_ids)
+      security_group_ids = lookup(vpc_options.value, "security_group_ids")
+      subnet_ids         = lookup(vpc_options.value, "subnet_ids")
     }
   }
 
@@ -154,12 +154,12 @@ locals {
 
   # vpc_options
   # If no vpc_options list is provided, build a vpc_options using the default values
-  vpc_options_default = var.vpc_options != null ? var.vpc_options : {
-    security_group_ids = var.vpc_options_security_group_ids
-    subnet_ids         = var.vpc_options_subnet_ids
+  vpc_options_default = {
+    security_group_ids = lookup(var.vpc_options, "security_group_ids", null) == null ? var.vpc_options_security_group_ids : lookup(var.vpc_options, "security_group_ids")
+    subnet_ids         = lookup(var.vpc_options, "subnet_ids", null) == null ? var.vpc_options_subnet_ids : lookup(var.vpc_options, "subnet_ids")
   }
 
-  vpc_options = lookup(local.vpc_options_default, "subnet_ids", null) == null ? [] : [local.vpc_options_default]
+  vpc_options = length(lookup(local.vpc_options_default, "subnet_ids")) == 0 ? [] : [local.vpc_options_default]
 
   # log_publishing_options
   # If no log_publishing_options list is provided, build a log_publishing_options using the default values

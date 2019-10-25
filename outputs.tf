@@ -20,7 +20,7 @@ output "kibana_endpoint" {
 
 output "vpc_options_availability_zones" {
   description = "If the domain was created inside a VPC, the names of the availability zones the configured subnet_ids were created inside"
-  value       = length(aws_elasticsearch_domain.es_domain.vpc_options) > 0 ? aws_elasticsearch_domain.es_domain.vpc_options.0.availability_zones : ""
+  value       = length(aws_elasticsearch_domain.es_domain.vpc_options) > 0 ? aws_elasticsearch_domain.es_domain.vpc_options.0.availability_zones : []
 }
 
 output "vpc_options_vpc_id" {
