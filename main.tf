@@ -81,9 +81,9 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "log_publishing_options" {
     for_each = local.log_publishing_options
     content {
-      log_type                 = lookup(log_publishing_options.value, "log_type", var.log_publishing_options_log_type)
-      cloudwatch_log_group_arn = lookup(log_publishing_options.value, "cloudwatch_log_group_arn", aws_cloudwatch_log_group.es_cloudwatch_log_group.arn)
-      enabled                  = lookup(log_publishing_options.value, "enabled", var.log_publishing_options_enabled)
+      log_type                 = lookup(log_publishing_options.value, "log_type")
+      cloudwatch_log_group_arn = lookup(log_publishing_options.value, "cloudwatch_log_group_arn")
+      enabled                  = lookup(log_publishing_options.value, "enabled")
     }
   }
 
@@ -163,23 +163,23 @@ locals {
 
   # log_publishing_options
   # If no log_publishing_options list is provided, build a log_publishing_options using the default values
-  log_publishing_options_default = var.log_publishing_options != null ? var.log_publishing_options : {
-    log_type                 = var.log_publishing_options_log_type
-    cloudwatch_log_group_arn = var.log_publishing_options_cloudwatch_log_group_arn == "" ? aws_cloudwatch_log_group.es_cloudwatch_log_group.arn : var.log_publishing_options_cloudwatch_log_group_arn
-    enabled                  = var.log_publishing_options_enabled
+  log_publishing_options_default = {
+    log_type                 = lookup(var.log_publishing_options, "log_type", null) == null ? var.log_publishing_options_log_type : lookup(var.log_publishing_options, "log_type")
+    cloudwatch_log_group_arn = lookup(var.log_publishing_options, "cloudwatch_log_group_arn", null) == null ? (var.log_publishing_options_cloudwatch_log_group_arn == "" ? aws_cloudwatch_log_group.es_cloudwatch_log_group.arn : var.log_publishing_options_cloudwatch_log_group_arn) : lookup(var.log_publishing_options, "cloudwatch_log_group_arn")
+    enabled                  = lookup(var.log_publishing_options, "enabled", null) == null ? var.log_publishing_options_enabled : lookup(var.log_publishing_options, "enabled")
   }
 
-  log_publishing_options = lookup(local.log_publishing_options_default, "enabled", null) == null ? [] : [local.log_publishing_options_default]
+  log_publishing_options = var.log_publishing_options_enabled == false || lookup(local.log_publishing_options_default, "enabled") == "false" ? [] : [local.log_publishing_options_default]
 
   # cognito_options
   # If no cognito_options list is provided, build a cognito_options using the default values
-  cognito_options_default = var.cognito_options != null ? var.cognito_options : {
-    enabled          = var.cognito_options_enabled
-    user_pool_id     = var.cognito_options_user_pool_id
-    identity_pool_id = var.cognito_options_identity_pool_id
-    role_arn         = var.cognito_options_role_arn
+  cognito_options_default = {
+    enabled          = lookup(var.cognito_options, "enabled", null) == null ? var.cognito_options_enabled : lookup(var.cognito_options, "enabled")
+    user_pool_id     = lookup(var.cognito_options, "user_pool_id", null) == null ? var.cognito_options_user_pool_id : lookup(var.cognito_options, "user_pool_id")
+    identity_pool_id = lookup(var.cognito_options, "identity_pool_id", null) == null ? var.cognito_options_identity_pool_id : lookup(var.cognito_options, "identity_pool_id")
+    role_arn         = lookup(var.cognito_options, "role_arn", null) == null ? var.cognito_options_role_arn : lookup(var.cognito_options, "role_arn")
   }
 
-  cognito_options = lookup(local.cognito_options_default, "enabled", null) == null ? [] : [local.cognito_options_default]
+  cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", "false") == "false" ? [] : [local.cognito_options_default]
 
 }
