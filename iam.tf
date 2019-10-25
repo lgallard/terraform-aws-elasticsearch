@@ -1,5 +1,6 @@
 resource "aws_cloudwatch_log_group" "es_cloudwatch_log_group" {
   name = "${var.domain_name}-log_group"
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_log_resource_policy" "es_aws_cloudwatch_log_resource_policy" {

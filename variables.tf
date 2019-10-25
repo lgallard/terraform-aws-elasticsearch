@@ -218,8 +218,15 @@ variable "cognito_options_identity_pool_id" {
   type        = string
   default     = ""
 }
+
 variable "cognito_options_role_arn" {
   description = "ARN of the IAM role that has the AmazonESCognitoAccess policy attached"
   type        = string
   default     = ""
+}
+
+variable "tags" {
+  description = "A mapping of tags to assign to the resource"
+  type        = map
+  default     = {}
 }

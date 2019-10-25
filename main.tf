@@ -98,6 +98,9 @@ resource "aws_elasticsearch_domain" "es_domain" {
     }
   }
 
+  # Tags
+  tags = var.tags
+
 }
 
 locals {
