@@ -43,18 +43,18 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "cluster_config" {
     for_each = local.cluster_config
     content {
-      instance_type            = lookup(cluster_config.value, "instance_type", var.cluster_config_instance_type)
-      instance_count           = lookup(cluster_config.value, "instance_count", var.cluster_config_instance_count)
-      dedicated_master_enabled = lookup(cluster_config.value, "dedicated_master_enabled", var.cluster_config_dedicated_master_enabled)
-      dedicated_master_type    = lookup(cluster_config.value, "dedicated_master_type", var.cluster_config_dedicated_master_type)
-      dedicated_master_count   = lookup(cluster_config.value, "dedicated_master_count", var.cluster_config_dedicated_master_count)
-      zone_awareness_enabled   = lookup(cluster_config.value, "zone_awareness_enabled", var.cluster_config_zone_awareness_enabled)
+      instance_type            = lookup(cluster_config.value, "instance_type")
+      instance_count           = lookup(cluster_config.value, "instance_count")
+      dedicated_master_enabled = lookup(cluster_config.value, "dedicated_master_enabled")
+      dedicated_master_type    = lookup(cluster_config.value, "dedicated_master_type")
+      dedicated_master_count   = lookup(cluster_config.value, "dedicated_master_count")
+      zone_awareness_enabled   = lookup(cluster_config.value, "zone_awareness_enabled")
 
       dynamic "zone_awareness_config" {
         # cluster_availability_zone_count valid values: 2 or 3.
         for_each = lookup(cluster_config.value, "zone_awareness_enabled", "false") == "false" || ! contains(["2", "3"], lookup(cluster_config.value, "availability_zone_count", "1")) ? [] : [1]
         content {
-          availability_zone_count = lookup(cluster_config.value, "availability_zone_count", var.cluster_config_availability_zone_count)
+          availability_zone_count = lookup(cluster_config.value, "availability_zone_count")
         }
       }
     }
@@ -132,14 +132,14 @@ locals {
 
   # cluster_config
   # If no cluster_config list is provided, build a cluster_config using the default values
-  cluster_config_default = var.cluster_config != null ? var.cluster_config : {
-    instance_type            = var.cluster_config_instance_type
-    instance_count           = var.cluster_config_instance_count
-    dedicated_master_enabled = var.cluster_config_dedicated_master_enabled
-    dedicated_master_type    = var.cluster_config_dedicated_master_type
-    dedicated_master_count   = var.cluster_config_dedicated_master_count
-    zone_awareness_enabled   = var.cluster_config_zone_awareness_enabled
-    availability_zone_count  = var.cluster_config_availability_zone_count
+  cluster_config_default = {
+    instance_type            = lookup(var.cluster_config, "instance_type", null) == null ? var.cluster_config_instance_type : lookup(var.cluster_config, "instance_type")
+    instance_count           = lookup(var.cluster_config, "instance_count", null) == null ? var.cluster_config_instance_count : lookup(var.cluster_config, "instance_count")
+    dedicated_master_enabled = lookup(var.cluster_config, "dedicated_master_enabled", null) == null ? var.cluster_config_dedicated_master_enabled : lookup(var.cluster_config, "dedicated_master_enabled")
+    dedicated_master_type    = lookup(var.cluster_config, "dedicated_master_type", null) == null ? var.cluster_config_dedicated_master_type : lookup(var.cluster_config, "dedicated_master_enabled")
+    dedicated_master_count   = lookup(var.cluster_config, "dedicated_master_count", null) == null ? var.cluster_config_dedicated_master_count : lookup(var.cluster_config, "dedicated_master_count")
+    zone_awareness_enabled   = lookup(var.cluster_config, "zone_awareness_enabled", null) == null ? var.cluster_config_zone_awareness_enabled : lookup(var.cluster_config, "zone_awareness_enabled")
+    availability_zone_count  = lookup(var.cluster_config, "availability_zone_count", null) == null ? var.cluster_config_availability_zone_count : lookup(var.cluster_config, "availability_zone_count")
   }
 
   cluster_config = [local.cluster_config_default]
