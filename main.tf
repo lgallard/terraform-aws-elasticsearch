@@ -35,7 +35,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "node_to_node_encryption" {
     for_each = local.node_to_node_encryption
     content {
-      enabled = lookup(node_to_node_encryption.value, "enabled ", var.node_to_node_encryption_enabled)
+      enabled = lookup(node_to_node_encryption.value, "enabled")
     }
   }
 
@@ -124,11 +124,11 @@ locals {
 
   # node_to_node_encryption
   # If no node_to_node_encryption list is provided, build a node_to_node_encryption using the default values
-  node_to_node_encryption_default = var.node_to_node_encryption != null ? var.node_to_node_encryption : {
-    enabled = var.node_to_node_encryption_enabled
+  node_to_node_encryption_default = {
+    enabled = lookup(var.node_to_node_encryption, "enabled", null) == null ? var.node_to_node_encryption_enabled : lookup(var.node_to_node_encryption, "enabled")
   }
 
-  node_to_node_encryption = lookup(local.node_to_node_encryption_default, "enabled", false) == false ? [] : [local.node_to_node_encryption_default]
+  node_to_node_encryption = local.node_to_node_encryption_default == {} || lookup(local.node_to_node_encryption_default, "enabled", "false") == "false" || var.node_to_node_encryption_enabled == false ? [] : [local.node_to_node_encryption_default]
 
   # cluster_config
   # If no cluster_config list is provided, build a cluster_config using the default values
