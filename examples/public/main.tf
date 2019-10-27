@@ -30,11 +30,15 @@ module "aws_es" {
     "rest.action.multi.allow_explicit_index" = "true"
   }
 
-  access_policies = data.aws_iam_policy_document.allow_access_to_the_domain_from_specific_ips.json
+  access_policies = templatefile("${path.module}/whitelist.tpl", {
+    region      = data.aws_region.current.name,
+    account     = data.aws_caller_identity.current.account_id,
+    domain_name = var.es_domain_name,
+    whitelist   = "${jsonencode(var.whitelist)}"
+  })
 
   tags = {
     Owner = "sysops"
     env   = "dev"
   }
 }
-

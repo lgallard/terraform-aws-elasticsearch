@@ -8,8 +8,8 @@ variable "es_domain_name" {}
 variable "es_version" {}
 
 
-# Policies
-variable "es_ips" {
+# Whitelist (allow public IPs)
+variable "whitelist" {
   default = []
 }
 
