@@ -5,10 +5,6 @@ module "aws_es" {
   domain_name           = "elasticsearch_public"
   elasticsearch_version = "7.1"
 
-  encrypt_at_rest_enabled                        = "true"
-  node_to_node_encryption_enabled                = "true"
-  snapshot_options_automated_snapshot_start_hour = "23"
-
   cluster_config = {
     dedicated_master_enabled = "true"
     instance_count           = "3"
@@ -21,6 +17,12 @@ module "aws_es" {
     ebs_enabled = "true"
     volume_size = "25"
   }
+
+  encrypt_at_rest = {
+    enabled    = "true"
+    kms_key_id = "alias/aws/es"
+  }
+
 
   log_publishing_options = {
     enabled = "true"
@@ -36,6 +38,9 @@ module "aws_es" {
     domain_name = var.es_domain_name,
     whitelist   = "${jsonencode(var.whitelist)}"
   })
+
+  node_to_node_encryption_enabled                = "true"
+  snapshot_options_automated_snapshot_start_hour = "23"
 
   tags = {
     Owner = "sysops"

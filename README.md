@@ -22,20 +22,21 @@ module "aws_es" {
   }
 
   encrypt_at_rest = {
-    enabled = "true"
-  }
-
-  snapshot_options_ = {
-    automated_snapshot_start_hour = "23"
+    enabled    = "true"
+    kms_key_id = "alias/aws/es"
   }
 
   log_publishing_options = {
-    enabled = "true"
+    enabled                  = "true"
+    log_type                 = "INDEX_SLOW_LOGS"
   }
 
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
+
+  node_to_node_encryption_enabled                = "true"
+  snapshot_options_automated_snapshot_start_hour = "23"
 
   tags = {
     Owner = "sysops"
@@ -64,15 +65,18 @@ module "aws_es" {
   ebs_options_ebs_enabled = true
   ebs_options_volume_size = "25"
 
-  encrypt_at_rest_enabled = true
+  encrypt_at_rest_enabled    = true
+  encrypt_at_rest_kms_key_id = "alias/aws/es"
 
-  snapshot_options_automated_snapshot_start_hour = "23"
-
-  log_publishing_options_enabled = true
+  log_publishing_options_enabled  = true
+  log_publishing_options_log_type = "INDEX_SLOW_LOGS"
 
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
+
+  node_to_node_encryption_enabled                = "true"
+  snapshot_options_automated_snapshot_start_hour = "23"
 
   tags = {
     Owner = "sysops"
