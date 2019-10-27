@@ -2,8 +2,8 @@ module "aws_es" {
 
   source = "lgallard/elasticsearch/aws"
 
-  domain_name           = "elasticsearch_public"
-  elasticsearch_version = "7.1"
+  domain_name           = var.es_domain_name
+  elasticsearch_version = var.es_version
 
   cluster_config = {
     dedicated_master_enabled = "true"
