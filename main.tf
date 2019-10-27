@@ -101,6 +101,11 @@ resource "aws_elasticsearch_domain" "es_domain" {
   # Tags
   tags = var.tags
 
+  # Service-linked role to give Amazon ES permissions to access your VPC
+  depends_on = [
+    "aws_iam_service_linked_role.es",
+  ]
+
 }
 
 locals {
