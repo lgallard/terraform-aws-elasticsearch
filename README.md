@@ -1,3 +1,4 @@
+![Terraform](https://lgallardo.com/images/terraform.jpg)
 # terraform-aws-elasticsearch
 
 Terraform module to create [Amazon Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/) clusters, following the Well-Architected Framework and best AWS practices.
