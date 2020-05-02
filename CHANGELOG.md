@@ -1,3 +1,9 @@
+## 0.2.1 (May 2, 2020)
+
+UPDATE:
+
+* Update README
+
 ## 0.2.0 (May 2, 2020)
 
 ENHANCEMENTS:
