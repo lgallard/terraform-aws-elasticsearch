@@ -98,6 +98,14 @@ resource "aws_elasticsearch_domain" "es_domain" {
     }
   }
 
+  # Timeouts
+  dynamic "timeouts" {
+    for_each = local.timeouts
+    content {
+      update = lookup(timeouts.value, "update")
+    }
+  }
+
   # Tags
   tags = var.tags
 
@@ -190,5 +198,14 @@ locals {
   }
 
   cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", "false") == "false" ? [] : [local.cognito_options_default]
+
+  # Timeouts
+  # If timeouts block is provided, build one using the default values
+  timeouts = var.timeouts_update == null && length(var.timeouts) == 0 ? [] : [
+    {
+      update = lookup(var.timeouts, "update", null) == null ? var.timeouts_update : lookup(var.timeouts, "update")
+    }
+  ]
+
 
 }

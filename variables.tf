@@ -230,3 +230,17 @@ variable "tags" {
   type        = map
   default     = {}
 }
+
+
+# Timeouts
+variable "timeouts" {
+  description = "Timeouts map."
+  type        = map
+  default     = {}
+}
+
+variable "timeouts_update" {
+  description = "How long to wait for updates."
+  type        = string
+  default     = null
+}

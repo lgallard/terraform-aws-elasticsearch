@@ -1,3 +1,14 @@
+## 0.2.0 (May 2, 2020)
+
+ENHANCEMENTS:
+
+* Add support for customizable update timeout
+
+UPDATES:
+
+* Update public and vpc examples
+
+
 ## 0.1.2 (April 1, 2020)
 
 UPDATES:

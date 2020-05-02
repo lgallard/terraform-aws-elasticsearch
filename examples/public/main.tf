@@ -23,7 +23,6 @@ module "aws_es" {
     kms_key_id = "alias/aws/es"
   }
 
-
   log_publishing_options = {
     enabled = "true"
   }
@@ -32,7 +31,7 @@ module "aws_es" {
     "rest.action.multi.allow_explicit_index" = "true"
   }
 
-  access_policies = templatefile("${path.module}/whitelist.tpl", {
+  access_policies = templatefile("${path.module}/whitelits.tpl", {
     region      = data.aws_region.current.name,
     account     = data.aws_caller_identity.current.account_id,
     domain_name = var.es_domain_name,
@@ -41,6 +40,8 @@ module "aws_es" {
 
   node_to_node_encryption_enabled                = "true"
   snapshot_options_automated_snapshot_start_hour = "23"
+
+  timeouts_update = "60m"
 
   tags = {
     Owner = "sysops"

@@ -37,6 +37,8 @@ module "aws_es" {
     domain_name = var.es_domain_name
   })
 
+  timeouts_update = "60m"
+
   tags = {
     Owner = "sysops"
     env   = "dev"
