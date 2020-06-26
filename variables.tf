@@ -244,3 +244,10 @@ variable "timeouts_update" {
   type        = string
   default     = null
 }
+
+# Service Link Role
+variable "create_service_link_role" {
+  description = "Create service link role for AWS Elasticsearch Service"
+  type        = bool
+  default     = true
+}
