@@ -121,6 +121,7 @@ module "aws_es" {
 | cognito\_options\_identity\_pool\_id | ID of the Cognito Identity Pool to use | `string` | `""` | no |
 | cognito\_options\_role\_arn | ARN of the IAM role that has the AmazonESCognitoAccess policy attached | `string` | `""` | no |
 | cognito\_options\_user\_pool\_id | ID of the Cognito User Pool to use | `string` | `""` | no |
+| create\_service\_link\_role | Create service link role for AWS Elasticsearch Service | `bool` | `true` | no |
 | domain\_name | Name of the domain | `string` | n/a | yes |
 | ebs\_enabled | Whether EBS volumes are attached to data nodes in the domain | `bool` | `true` | no |
 | ebs\_options | EBS related options, may be required based on chosen instance size | `map` | `{}` | no |

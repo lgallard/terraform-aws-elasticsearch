@@ -1,3 +1,10 @@
+## 0.3.0 (June 26, 2020)
+
+FIXES:
+
+* Add Service Link role creation flag (default to `true`)
+
+
 ## 0.2.1 (May 2, 2020)
 
 UPDATE:
