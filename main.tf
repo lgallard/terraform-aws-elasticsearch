@@ -11,6 +11,24 @@ resource "aws_elasticsearch_domain" "es_domain" {
   # advanced_options
   advanced_options = var.advanced_options == null ? {} : var.advanced_options
 
+  # advanced_security_options
+  dynamic "advanced_security_options" {
+    for_each = local.advanced_security_options
+    content {
+      enabled                        = lookup(advanced_security_options.value, "enabled")
+      internal_user_database_enabled = lookup(advanced_security_options.value, "internal_user_database_enabled ")
+
+      dynamic "master_user_options " {
+        for_each = lookup(advanced_security_options.value, "master_user_options")
+        content {
+          master_user_arn      = lookup(master_user_options.value, "master_user_arn")
+          master_user_name     = lookup(master_user_name.value, "master_user_name")
+          master_user_password = lookup(master_user_password.value, "master_user_name")
+        }
+      }
+    }
+  }
+
   # ebs_options
   dynamic "ebs_options" {
     for_each = local.ebs_options
@@ -117,9 +135,25 @@ resource "aws_elasticsearch_domain" "es_domain" {
 }
 
 locals {
+  # advanced_security_options
+  # Create subblock master_user_options
+  master_user_options = lenght(lookup(var.advanced_security_options, "master_user_options")) != 0 ? lookup(var.advanced_security_options, "master_user_options") : {
+    master_user_arn      = var.advanced_security_options_internal_user_database_enabled == false ? var.advanced_security_options_master_user_arn : null
+    master_user_username = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_username : null
+    master_user_password = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_password : null
+  }
+
+  # If advanced_security_options is provided, build a advanced_security_options using the default values
+  advanced_security_options_default = {
+    enabled                        = lookup(var.advanced_security_options, "enabled", null) == null ? var.advanced_security_options_enabled : lookup(var.advanced_security_options, "enabled")
+    internal_user_database_enabled = lookup(var.advanced_security_options, "internal_user_database_enabled", null) == null ? var.advanced_security_options_internal_user_database_enabled : lookup(var.advanced_security_options, "internal_user_database_enabled")
+    master_user_options            = local.master_user_options
+  }
+
+  advanced_security_options = lookup(local.advanced_security_options_default, "enabled", "false") == "false" ? [] : [local.advanced_security_options_default]
 
   # ebs_options
-  # If no ebs_options is provided, build a ebs_options using the default values
+  # If no ebs_options is provided, build an ebs_options using the default values
   ebs_option_default = {
     ebs_enabled = lookup(var.ebs_options, "ebs_enabled", null) == null ? var.ebs_enabled : lookup(var.ebs_options, "ebs_enabled")
     volume_type = lookup(var.ebs_options, "volume_type", null) == null ? var.ebs_options_volume_type : lookup(var.ebs_options, "volume_type")
