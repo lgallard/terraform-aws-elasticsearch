@@ -1,3 +1,14 @@
+## 0.4.0 (July 15, 2020)
+
+ENHANCEMENTS:
+
+* Add `advanced_security_options` block
+* Add examples for `advanced_security_options` block
+
+FIXES:
+
+* Change "false" for the bool value
+
 ## 0.3.0 (June 26, 2020)
 
 FIXES:
