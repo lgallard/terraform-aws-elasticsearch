@@ -67,7 +67,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
 
       dynamic "zone_awareness_config" {
         # cluster_availability_zone_count valid values: 2 or 3.
-        for_each = lookup(cluster_config.value, "zone_awareness_enabled", "false") == "false" || ! contains(["2", "3"], lookup(cluster_config.value, "availability_zone_count", "1")) ? [] : [1]
+        for_each = lookup(cluster_config.value, "zone_awareness_enabled", false) == false || ! contains(["2", "3"], lookup(cluster_config.value, "availability_zone_count", "1")) ? [] : [1]
         content {
           availability_zone_count = lookup(cluster_config.value, "availability_zone_count")
         }
@@ -158,7 +158,7 @@ locals {
     iops        = lookup(var.ebs_options, "iops", null) == null ? var.ebs_options_iops : lookup(var.ebs_options, "iops")
   }
 
-  ebs_options = var.ebs_enabled == false || lookup(local.ebs_option_default, "ebs_enabled", "false") == "false" ? [] : [local.ebs_option_default]
+  ebs_options = var.ebs_enabled == false || lookup(local.ebs_option_default, "ebs_enabled", false) == false ? [] : [local.ebs_option_default]
 
   # encrypt_at_rest
   # If no encrypt_at_rest list is provided, build a encrypt_at_rest using the default values
@@ -168,7 +168,7 @@ locals {
     kms_key_id = lookup(var.encrypt_at_rest, "kms_key_id", null) == null ? data.aws_kms_key.aws_es.arn : lookup(var.encrypt_at_rest, "kms_key_id")
   }
 
-  encrypt_at_rest = var.encrypt_at_rest_enabled == false || lookup(local.encrypt_at_rest_default, "enabled", "false") == "false" ? [] : [local.encrypt_at_rest_default]
+  encrypt_at_rest = var.encrypt_at_rest_enabled == false || lookup(local.encrypt_at_rest_default, "enabled", false) == false ? [] : [local.encrypt_at_rest_default]
 
   # node_to_node_encryption
   # If no node_to_node_encryption list is provided, build a node_to_node_encryption using the default values
@@ -176,7 +176,7 @@ locals {
     enabled = lookup(var.node_to_node_encryption, "enabled", null) == null ? var.node_to_node_encryption_enabled : lookup(var.node_to_node_encryption, "enabled")
   }
 
-  node_to_node_encryption = var.node_to_node_encryption_enabled == false || lookup(local.node_to_node_encryption_default, "enabled", "false") == "false" ? [] : [local.node_to_node_encryption_default]
+  node_to_node_encryption = var.node_to_node_encryption_enabled == false || lookup(local.node_to_node_encryption_default, "enabled", false) == false ? [] : [local.node_to_node_encryption_default]
 
   # cluster_config
   # If no cluster_config list is provided, build a cluster_config using the default values
@@ -217,7 +217,7 @@ locals {
     enabled                  = lookup(var.log_publishing_options, "enabled", null) == null ? var.log_publishing_options_enabled : lookup(var.log_publishing_options, "enabled")
   }
 
-  log_publishing_options = var.log_publishing_options_enabled == false || lookup(local.log_publishing_options_default, "enabled") == "false" ? [] : [local.log_publishing_options_default]
+  log_publishing_options = var.log_publishing_options_enabled == false || lookup(local.log_publishing_options_default, "enabled") == false ? [] : [local.log_publishing_options_default]
 
   # cognito_options
   # If no cognito_options list is provided, build a cognito_options using the default values
@@ -228,7 +228,7 @@ locals {
     role_arn         = lookup(var.cognito_options, "role_arn", null) == null ? var.cognito_options_role_arn : lookup(var.cognito_options, "role_arn")
   }
 
-  cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", "false") == "false" ? [] : [local.cognito_options_default]
+  cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", false) == false ? [] : [local.cognito_options_default]
 
   # Timeouts
   # If timeouts block is provided, build one using the default values
