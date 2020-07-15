@@ -100,7 +100,7 @@ module "aws_es" {
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.60.0 |
+| aws | >= 2.69.0 |
 
 ## Inputs
 
@@ -108,6 +108,12 @@ module "aws_es" {
 |------|-------------|------|---------|:--------:|
 | access\_policies | IAM policy document specifying the access policies for the domain | `string` | `""` | no |
 | advanced\_options | Key-value string pairs to specify advanced configuration options. Note that the values for these configuration options must be strings (wrapped in quotes) or they may be wrong and cause a perpetual diff, causing Terraform to want to recreate your Elasticsearch domain on every apply | `map(string)` | `{}` | no |
+| advanced\_security\_options | Options for fine-grained access control | `any` | `{}` | no |
+| advanced\_security\_options\_enabled | Whether advanced security is enabled (Forces new resource) | `bool` | `false` | no |
+| advanced\_security\_options\_internal\_user\_database\_enabled | Whether the internal user database is enabled. If not set, defaults to false by the AWS API. | `bool` | `false` | no |
+| advanced\_security\_options\_master\_user\_arn | ARN for the master user. Only specify if `internal_user_database_enabled` is not set or set to `false`) | `string` | n/a | yes |
+| advanced\_security\_options\_master\_user\_password | The master user's password, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | n/a | yes |
+| advanced\_security\_options\_master\_user\_username | The master user's username, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | n/a | yes |
 | cluster\_config | Cluster configuration of the domain | `map` | `{}` | no |
 | cluster\_config\_availability\_zone\_count | Number of Availability Zones for the domain to use with | `number` | `3` | no |
 | cluster\_config\_dedicated\_master\_count | Number of dedicated master nodes in the cluster | `number` | `3` | no |

@@ -18,6 +18,43 @@ variable "access_policies" {
   default     = ""
 }
 
+# Advanced security options
+variable "advanced_security_options" {
+  description = "Options for fine-grained access control"
+  type        = any
+  default     = {}
+}
+
+variable "advanced_security_options_enabled" {
+  description = "Whether advanced security is enabled (Forces new resource)"
+  type        = bool
+  default     = false
+}
+
+variable "advanced_security_options_internal_user_database_enabled" {
+  description = "Whether the internal user database is enabled. If not set, defaults to false by the AWS API."
+  type        = bool
+  default     = false
+}
+
+variable "advanced_security_options_master_user_arn" {
+  description = "ARN for the master user. Only specify if `internal_user_database_enabled` is not set or set to `false`)"
+  type        = string
+  default     = null
+}
+
+variable "advanced_security_options_master_user_username" {
+  description = "The master user's username, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`."
+  type        = string
+  default     = null
+}
+
+variable "advanced_security_options_master_user_password" {
+  description = "The master user's password, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`."
+  type        = string
+  default     = null
+}
+
 # Advanced options
 variable "advanced_options" {
   description = "Key-value string pairs to specify advanced configuration options. Note that the values for these configuration options must be strings (wrapped in quotes) or they may be wrong and cause a perpetual diff, causing Terraform to want to recreate your Elasticsearch domain on every apply"

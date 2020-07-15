@@ -11,6 +11,21 @@ resource "aws_elasticsearch_domain" "es_domain" {
   # advanced_options
   advanced_options = var.advanced_options == null ? {} : var.advanced_options
 
+  # advanced_security_options
+  dynamic "advanced_security_options" {
+    for_each = local.advanced_security_options
+    content {
+      enabled                        = lookup(advanced_security_options.value, "enabled")
+      internal_user_database_enabled = lookup(advanced_security_options.value, "internal_user_database_enabled")
+
+      master_user_options {
+        master_user_arn      = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_arn", null)
+        master_user_name     = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_name", null)
+        master_user_password = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_name", null)
+      }
+    }
+  }
+
   # ebs_options
   dynamic "ebs_options" {
     for_each = local.ebs_options
@@ -52,7 +67,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
 
       dynamic "zone_awareness_config" {
         # cluster_availability_zone_count valid values: 2 or 3.
-        for_each = lookup(cluster_config.value, "zone_awareness_enabled", "false") == "false" || ! contains(["2", "3"], lookup(cluster_config.value, "availability_zone_count", "1")) ? [] : [1]
+        for_each = lookup(cluster_config.value, "zone_awareness_enabled", false) == false || ! contains(["2", "3"], lookup(cluster_config.value, "availability_zone_count", "1")) ? [] : [1]
         content {
           availability_zone_count = lookup(cluster_config.value, "availability_zone_count")
         }
@@ -117,9 +132,25 @@ resource "aws_elasticsearch_domain" "es_domain" {
 }
 
 locals {
+  # advanced_security_options
+  # Create subblock master_user_options
+  master_user_options = lookup(var.advanced_security_options, "master_user_options", null) != null ? lookup(var.advanced_security_options, "master_user_options") : {
+    master_user_arn      = var.advanced_security_options_internal_user_database_enabled == false ? var.advanced_security_options_master_user_arn : null
+    master_user_username = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_username : null
+    master_user_password = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_password : null
+  }
+
+  # If advanced_security_options is provided, build a advanced_security_options using the default values
+  advanced_security_options_default = {
+    enabled                        = lookup(var.advanced_security_options, "enabled", null) == null ? var.advanced_security_options_enabled : lookup(var.advanced_security_options, "enabled")
+    internal_user_database_enabled = lookup(var.advanced_security_options, "internal_user_database_enabled", null) == null ? var.advanced_security_options_internal_user_database_enabled : lookup(var.advanced_security_options, "internal_user_database_enabled")
+    master_user_options            = local.master_user_options
+  }
+
+  advanced_security_options = lookup(local.advanced_security_options_default, "enabled", false) == false ? [] : [local.advanced_security_options_default]
 
   # ebs_options
-  # If no ebs_options is provided, build a ebs_options using the default values
+  # If no ebs_options is provided, build an ebs_options using the default values
   ebs_option_default = {
     ebs_enabled = lookup(var.ebs_options, "ebs_enabled", null) == null ? var.ebs_enabled : lookup(var.ebs_options, "ebs_enabled")
     volume_type = lookup(var.ebs_options, "volume_type", null) == null ? var.ebs_options_volume_type : lookup(var.ebs_options, "volume_type")
@@ -127,7 +158,7 @@ locals {
     iops        = lookup(var.ebs_options, "iops", null) == null ? var.ebs_options_iops : lookup(var.ebs_options, "iops")
   }
 
-  ebs_options = var.ebs_enabled == false || lookup(local.ebs_option_default, "ebs_enabled", "false") == "false" ? [] : [local.ebs_option_default]
+  ebs_options = var.ebs_enabled == false || lookup(local.ebs_option_default, "ebs_enabled", false) == false ? [] : [local.ebs_option_default]
 
   # encrypt_at_rest
   # If no encrypt_at_rest list is provided, build a encrypt_at_rest using the default values
@@ -137,7 +168,7 @@ locals {
     kms_key_id = lookup(var.encrypt_at_rest, "kms_key_id", null) == null ? data.aws_kms_key.aws_es.arn : lookup(var.encrypt_at_rest, "kms_key_id")
   }
 
-  encrypt_at_rest = var.encrypt_at_rest_enabled == false || lookup(local.encrypt_at_rest_default, "enabled", "false") == "false" ? [] : [local.encrypt_at_rest_default]
+  encrypt_at_rest = var.encrypt_at_rest_enabled == false || lookup(local.encrypt_at_rest_default, "enabled", false) == false ? [] : [local.encrypt_at_rest_default]
 
   # node_to_node_encryption
   # If no node_to_node_encryption list is provided, build a node_to_node_encryption using the default values
@@ -145,7 +176,7 @@ locals {
     enabled = lookup(var.node_to_node_encryption, "enabled", null) == null ? var.node_to_node_encryption_enabled : lookup(var.node_to_node_encryption, "enabled")
   }
 
-  node_to_node_encryption = var.node_to_node_encryption_enabled == false || lookup(local.node_to_node_encryption_default, "enabled", "false") == "false" ? [] : [local.node_to_node_encryption_default]
+  node_to_node_encryption = var.node_to_node_encryption_enabled == false || lookup(local.node_to_node_encryption_default, "enabled", false) == false ? [] : [local.node_to_node_encryption_default]
 
   # cluster_config
   # If no cluster_config list is provided, build a cluster_config using the default values
@@ -186,7 +217,7 @@ locals {
     enabled                  = lookup(var.log_publishing_options, "enabled", null) == null ? var.log_publishing_options_enabled : lookup(var.log_publishing_options, "enabled")
   }
 
-  log_publishing_options = var.log_publishing_options_enabled == false || lookup(local.log_publishing_options_default, "enabled") == "false" ? [] : [local.log_publishing_options_default]
+  log_publishing_options = var.log_publishing_options_enabled == false || lookup(local.log_publishing_options_default, "enabled") == false ? [] : [local.log_publishing_options_default]
 
   # cognito_options
   # If no cognito_options list is provided, build a cognito_options using the default values
@@ -197,7 +228,7 @@ locals {
     role_arn         = lookup(var.cognito_options, "role_arn", null) == null ? var.cognito_options_role_arn : lookup(var.cognito_options, "role_arn")
   }
 
-  cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", "false") == "false" ? [] : [local.cognito_options_default]
+  cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", false) == false ? [] : [local.cognito_options_default]
 
   # Timeouts
   # If timeouts block is provided, build one using the default values
