@@ -16,15 +16,12 @@ resource "aws_elasticsearch_domain" "es_domain" {
     for_each = local.advanced_security_options
     content {
       enabled                        = lookup(advanced_security_options.value, "enabled")
-      internal_user_database_enabled = lookup(advanced_security_options.value, "internal_user_database_enabled ")
+      internal_user_database_enabled = lookup(advanced_security_options.value, "internal_user_database_enabled")
 
-      dynamic "master_user_options " {
-        for_each = lookup(advanced_security_options.value, "master_user_options")
-        content {
-          master_user_arn      = lookup(master_user_options.value, "master_user_arn")
-          master_user_name     = lookup(master_user_name.value, "master_user_name")
-          master_user_password = lookup(master_user_password.value, "master_user_name")
-        }
+      master_user_options {
+        master_user_arn      = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_arn", null)
+        master_user_name     = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_name", null)
+        master_user_password = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_name", null)
       }
     }
   }
@@ -137,7 +134,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
 locals {
   # advanced_security_options
   # Create subblock master_user_options
-  master_user_options = lenght(lookup(var.advanced_security_options, "master_user_options")) != 0 ? lookup(var.advanced_security_options, "master_user_options") : {
+  master_user_options = lookup(var.advanced_security_options, "master_user_options", null) != null ? lookup(var.advanced_security_options, "master_user_options") : {
     master_user_arn      = var.advanced_security_options_internal_user_database_enabled == false ? var.advanced_security_options_master_user_arn : null
     master_user_username = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_username : null
     master_user_password = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_password : null
@@ -150,7 +147,7 @@ locals {
     master_user_options            = local.master_user_options
   }
 
-  advanced_security_options = lookup(local.advanced_security_options_default, "enabled", "false") == "false" ? [] : [local.advanced_security_options_default]
+  advanced_security_options = lookup(local.advanced_security_options_default, "enabled", false) == false ? [] : [local.advanced_security_options_default]
 
   # ebs_options
   # If no ebs_options is provided, build an ebs_options using the default values

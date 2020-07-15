@@ -49,7 +49,7 @@ variable "advanced_security_options_master_user_username" {
   default     = null
 }
 
-variable "advanced_security_options_master_user_pasword" {
+variable "advanced_security_options_master_user_password" {
   description = "The master user's password, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`."
   type        = string
   default     = null
