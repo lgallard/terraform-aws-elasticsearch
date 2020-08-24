@@ -1,3 +1,9 @@
+## 0.4.1 (August 24, 2020)
+
+FIXES:
+
+* Bug/fix variable lookups for `master_user_password` and `dedicated_master_type` (thanks @mcook-bison)
+
 ## 0.4.0 (July 15, 2020)
 
 ENHANCEMENTS:
