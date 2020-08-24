@@ -21,7 +21,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
       master_user_options {
         master_user_arn      = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_arn", null)
         master_user_name     = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_name", null)
-        master_user_password = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_name", null)
+        master_user_password = lookup(lookup(advanced_security_options.value, "master_user_options"), "master_user_password", null)
       }
     }
   }
@@ -184,7 +184,7 @@ locals {
     instance_type            = lookup(var.cluster_config, "instance_type", null) == null ? var.cluster_config_instance_type : lookup(var.cluster_config, "instance_type")
     instance_count           = lookup(var.cluster_config, "instance_count", null) == null ? var.cluster_config_instance_count : lookup(var.cluster_config, "instance_count")
     dedicated_master_enabled = lookup(var.cluster_config, "dedicated_master_enabled", null) == null ? var.cluster_config_dedicated_master_enabled : lookup(var.cluster_config, "dedicated_master_enabled")
-    dedicated_master_type    = lookup(var.cluster_config, "dedicated_master_type", null) == null ? var.cluster_config_dedicated_master_type : lookup(var.cluster_config, "dedicated_master_enabled")
+    dedicated_master_type    = lookup(var.cluster_config, "dedicated_master_type", null) == null ? var.cluster_config_dedicated_master_type : lookup(var.cluster_config, "dedicated_master_type")
     dedicated_master_count   = lookup(var.cluster_config, "dedicated_master_count", null) == null ? var.cluster_config_dedicated_master_count : lookup(var.cluster_config, "dedicated_master_count")
     zone_awareness_enabled   = lookup(var.cluster_config, "zone_awareness_enabled", null) == null ? var.cluster_config_zone_awareness_enabled : lookup(var.cluster_config, "zone_awareness_enabled")
     availability_zone_count  = lookup(var.cluster_config, "availability_zone_count", null) == null ? var.cluster_config_availability_zone_count : lookup(var.cluster_config, "availability_zone_count")
