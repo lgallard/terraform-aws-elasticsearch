@@ -128,6 +128,9 @@ module "aws_es" {
 | cognito\_options\_role\_arn | ARN of the IAM role that has the AmazonESCognitoAccess policy attached | `string` | `""` | no |
 | cognito\_options\_user\_pool\_id | ID of the Cognito User Pool to use | `string` | `""` | no |
 | create\_service\_link\_role | Create service link role for AWS Elasticsearch Service | `bool` | `true` | no |
+| domain\_endpoint\_options | Domain endpoint HTTP(S) related options. | `any` | `{}` | no |
+| domain\_endpoint\_options\_enforce\_https | Whether or not to require HTTPS | `bool` | `false` | no |
+| domain\_endpoint\_options\_tls\_security\_policy | The name of the TLS security policy that needs to be applied to the HTTPS endpoint. Valid values: `Policy-Min-TLS-1-0-2019-07` and `Policy-Min-TLS-1-2-2019-07` | `string` | `"Policy-Min-TLS-1-2-2019-07"` | no |
 | domain\_name | Name of the domain | `string` | n/a | yes |
 | ebs\_enabled | Whether EBS volumes are attached to data nodes in the domain | `bool` | `true` | no |
 | ebs\_options | EBS related options, may be required based on chosen instance size | `map` | `{}` | no |
