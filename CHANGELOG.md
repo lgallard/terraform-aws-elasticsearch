@@ -1,3 +1,12 @@
+## 0.5.0 (September 3, 2020)
+
+ENHANCEMENTS:
+
+* Add `domain_endpoint_options` support
+* Update advaced security options examples
+* Move advaced security options examples to its own folders
+* Add READMEs to each example folder
+
 ## 0.4.1 (August 24, 2020)
 
 FIXES:

@@ -26,6 +26,15 @@ resource "aws_elasticsearch_domain" "es_domain" {
     }
   }
 
+  # domain_endpoint_options
+  dynamic "domain_endpoint_options" {
+    for_each = local.domain_endpoint_options
+    content {
+      enforce_https       = lookup(domain_endpoint_options.value, "enforce_https")
+      tls_security_policy = lookup(domain_endpoint_options.value, "tls_security_policy")
+    }
+  }
+
   # ebs_options
   dynamic "ebs_options" {
     for_each = local.ebs_options
@@ -140,7 +149,7 @@ locals {
     master_user_password = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_password : null
   }
 
-  # If advanced_security_options is provided, build a advanced_security_options using the default values
+  # If advanced_security_options is provided, build an advanced_security_options using the default values
   advanced_security_options_default = {
     enabled                        = lookup(var.advanced_security_options, "enabled", null) == null ? var.advanced_security_options_enabled : lookup(var.advanced_security_options, "enabled")
     internal_user_database_enabled = lookup(var.advanced_security_options, "internal_user_database_enabled", null) == null ? var.advanced_security_options_internal_user_database_enabled : lookup(var.advanced_security_options, "internal_user_database_enabled")
@@ -148,6 +157,14 @@ locals {
   }
 
   advanced_security_options = lookup(local.advanced_security_options_default, "enabled", false) == false ? [] : [local.advanced_security_options_default]
+
+  # If domain_endpoint_options is provided, build an domain_endpoint_options using the default values
+  domain_endpoint_options_default = {
+    enforce_https       = lookup(var.domain_endpoint_options, "enforce_https", null) == null ? var.domain_endpoint_options_enforce_https : lookup(var.domain_endpoint_options, "enforce_https")
+    tls_security_policy = lookup(var.domain_endpoint_options, "tls_security_policy", null) == null ? var.domain_endpoint_options_tls_security_policy : lookup(var.domain_endpoint_options, "tls_security_policy")
+  }
+
+  domain_endpoint_options = lookup(local.domain_endpoint_options_default, "enforce_https", false) == false ? [] : [local.domain_endpoint_options_default]
 
   # ebs_options
   # If no ebs_options is provided, build an ebs_options using the default values

@@ -55,6 +55,25 @@ variable "advanced_security_options_master_user_password" {
   default     = null
 }
 
+# Domain endpoint options
+variable "domain_endpoint_options" {
+  description = "Domain endpoint HTTP(S) related options."
+  type        = any
+  default     = {}
+}
+
+variable "domain_endpoint_options_enforce_https" {
+  description = "Whether or not to require HTTPS"
+  type        = bool
+  default     = false
+}
+
+variable "domain_endpoint_options_tls_security_policy" {
+  description = "The name of the TLS security policy that needs to be applied to the HTTPS endpoint. Valid values: `Policy-Min-TLS-1-0-2019-07` and `Policy-Min-TLS-1-2-2019-07`"
+  type        = string
+  default     = "Policy-Min-TLS-1-2-2019-07"
+}
+
 # Advanced options
 variable "advanced_options" {
   description = "Key-value string pairs to specify advanced configuration options. Note that the values for these configuration options must be strings (wrapped in quotes) or they may be wrong and cause a perpetual diff, causing Terraform to want to recreate your Elasticsearch domain on every apply"
