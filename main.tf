@@ -31,7 +31,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
     for_each = local.domain_endpoint_options
     content {
       enforce_https       = lookup(domain_endpoint_options.value, "enforce_https")
-      tls_security_policy = lookup(domain_endpoint_options.value, "tls_security_policy ")
+      tls_security_policy = lookup(domain_endpoint_options.value, "tls_security_policy")
     }
   }
 

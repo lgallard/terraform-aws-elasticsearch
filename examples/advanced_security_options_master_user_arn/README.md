@@ -1,3 +1,6 @@
+# AWS Elasticsearch domain with Advanced Security Options using master user ARN example 
+
+```
 module "aws_es" {
 
   source = "lgallard/elasticsearch/aws"
@@ -17,10 +20,11 @@ module "aws_es" {
     enabled                        = true
     internal_user_database_enabled = true
     master_user_options = {
-      master_user_name     = "username"
-      master_user_password = "topsecret"
+      master_user_arn = "arn:aws:iam::123456789101:user/lgallard"
     }
   }
+
+  domain_endpoint_options_enforce_https = true
 
   ebs_options = {
     ebs_enabled = "true"
@@ -29,7 +33,7 @@ module "aws_es" {
 
   encrypt_at_rest = {
     enabled    = "true"
-    kms_key_id = "alias/aws/es"
+    kms_key_id = "arn:aws:kms:us-east-1:123456789101:key/cccc103b-4ba3-5993-6fc7-b7e538b25fd8"
   }
 
 
@@ -58,3 +62,4 @@ module "aws_es" {
     env   = "dev"
   }
 }
+```
