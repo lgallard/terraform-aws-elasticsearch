@@ -14,8 +14,7 @@ module "aws_es" {
   }
 
   advanced_security_options = {
-    enabled                        = true
-    internal_user_database_enabled = true
+    enabled = true
     master_user_options = {
       master_user_arn = "arn:aws:iam::123456789101:user/lgallard"
     }
