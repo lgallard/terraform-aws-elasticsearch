@@ -1,3 +1,9 @@
+## 0.5.1 (September 17, 2020)
+
+FIXES:
+
+* Fix `advanced_security_options` example. In order to use `master_user_arn`, the value for `internal_user_database_enabled` must be set to `false`.
+
 ## 0.5.0 (September 3, 2020)
 
 ENHANCEMENTS:
