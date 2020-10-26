@@ -193,6 +193,24 @@ variable "cluster_config_zone_awareness_enabled" {
   default     = false
 }
 
+variable "cluster_config_warm_enabled" {
+  description = "Indicates whether to enable warm storage"
+  type        = bool
+  default     = false
+}
+
+variable "cluster_config_warm_count" {
+  description = "The number of warm nodes in the cluster"
+  type        = number
+  default     = 2
+}
+
+variable "cluster_config_warm_type" {
+  description = "The instance type for the Elasticsearch cluster's warm nodes"
+  type        = string
+  default     = "ultrawarm1.medium.elasticsearch"
+}
+
 # snapshot_options
 variable "snapshot_options" {
   description = "Snapshot related options"

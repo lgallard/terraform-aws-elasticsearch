@@ -122,6 +122,9 @@ module "aws_es" {
 | cluster\_config\_instance\_count | Number of instances in the cluster | `number` | `3` | no |
 | cluster\_config\_instance\_type | Instance type of data nodes in the cluster | `string` | `"r5.large.elasticsearch"` | no |
 | cluster\_config\_zone\_awareness\_enabled | Indicates whether zone awareness is enabled. To enable awareness with three Availability Zones | `bool` | `false` | no |
+| cluster\_config\_warm\_enabled | Indicates whether to enable warm storage | `bool` | `false` | no |
+| cluster\_config\_warm\_count | The number of warm nodes in the cluster. Valid values are between 2 and 150. warm_count can be only and must be set when `warm_enabled` is set to true | `number` | `2` | no |
+| cluster\_config\_warm\_type | The instance type for the Elasticsearch cluster's warm nodes. Valid values are ultrawarm1.medium.elasticsearch, ultrawarm1.large.elasticsearch and ultrawarm1.xlarge.elasticsearch. warm_type can be only and must be set when warm_enabled is set to true | `string` | `ultrawarm1.medium.elasticsearch` | no |
 | cognito\_options | Options for Amazon Cognito Authentication for Kibana | `map` | `{}` | no |
 | cognito\_options\_enabled | Specifies whether Amazon Cognito authentication with Kibana is enabled or not | `bool` | `false` | no |
 | cognito\_options\_identity\_pool\_id | ID of the Cognito Identity Pool to use | `string` | `""` | no |
