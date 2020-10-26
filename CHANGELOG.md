@@ -1,3 +1,9 @@
+## 0.6.0 (October 26, 2020)
+
+ENHANCEMENTS:
+
+* Add support for warm storage (thanks @jlfowle and @neilsmith1000)
+
 ## 0.5.1 (September 17, 2020)
 
 FIXES:
