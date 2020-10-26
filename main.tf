@@ -73,6 +73,9 @@ resource "aws_elasticsearch_domain" "es_domain" {
       dedicated_master_type    = lookup(cluster_config.value, "dedicated_master_type")
       dedicated_master_count   = lookup(cluster_config.value, "dedicated_master_count")
       zone_awareness_enabled   = lookup(cluster_config.value, "zone_awareness_enabled")
+      warm_enabled             = lookup(cluster_config.value, "warm_enabled")
+      warm_count               = lookup(cluster_config.value, "warm_count")
+      warm_type                = lookup(cluster_config.value, "warm_type")
 
       dynamic "zone_awareness_config" {
         # cluster_availability_zone_count valid values: 2 or 3.
@@ -205,6 +208,9 @@ locals {
     dedicated_master_count   = lookup(var.cluster_config, "dedicated_master_count", null) == null ? var.cluster_config_dedicated_master_count : lookup(var.cluster_config, "dedicated_master_count")
     zone_awareness_enabled   = lookup(var.cluster_config, "zone_awareness_enabled", null) == null ? var.cluster_config_zone_awareness_enabled : lookup(var.cluster_config, "zone_awareness_enabled")
     availability_zone_count  = lookup(var.cluster_config, "availability_zone_count", null) == null ? var.cluster_config_availability_zone_count : lookup(var.cluster_config, "availability_zone_count")
+    warm_enabled             = lookup(var.cluster_config, "warm_enabled", null) == null ? var.cluster_config_warm_enabled : lookup(var.cluster_config, "warm_enabled")
+    warm_count               = lookup(var.cluster_config, "warm_count", null) == null ? var.cluster_config_warm_count : lookup(var.cluster_config, "warm_count")
+    warm_type                = lookup(var.cluster_config, "warm_type", null) == null ? var.cluster_config_warm_type : lookup(var.cluster_config, "warm_type")
   }
 
   cluster_config = [local.cluster_config_default]
