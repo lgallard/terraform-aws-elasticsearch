@@ -1,3 +1,9 @@
+## 0.6.0 (October 28, 2020)
+
+FIXES:
+
+* Change default values for warm storage
+
 ## 0.6.0 (October 26, 2020)
 
 ENHANCEMENTS:
