@@ -202,13 +202,13 @@ variable "cluster_config_warm_enabled" {
 variable "cluster_config_warm_count" {
   description = "The number of warm nodes in the cluster"
   type        = number
-  default     = 2
+  default     = null
 }
 
 variable "cluster_config_warm_type" {
   description = "The instance type for the Elasticsearch cluster's warm nodes"
   type        = string
-  default     = "ultrawarm1.medium.elasticsearch"
+  default     = null
 }
 
 # snapshot_options
