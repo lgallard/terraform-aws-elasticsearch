@@ -148,6 +148,7 @@ module "aws_es" {
 | log\_publishing\_options\_cloudwatch\_log\_group\_arn | iARN of the Cloudwatch log group to which log needs to be published | `string` | `""` | no |
 | log\_publishing\_options\_enabled | Specifies whether given log publishing option is enabled or not | `bool` | `true` | no |
 | log\_publishing\_options\_log\_type | A type of Elasticsearch log. Valid values: INDEX\_SLOW\_LOGS, SEARCH\_SLOW\_LOGS, ES\_APPLICATION\_LOGS | `string` | `"INDEX_SLOW_LOGS"` | no |
+| log\_publishing\_options\_retention | Retention in days for the created Cloudwatch log group | `number` | `90` | no |
 | node\_to\_node\_encryption | Node-to-node encryption options | `map` | `{}` | no |
 | node\_to\_node\_encryption\_enabled | Whether to enable node-to-node encryption | `bool` | `true` | no |
 | snapshot\_options | Snapshot related options | `map` | `{}` | no |

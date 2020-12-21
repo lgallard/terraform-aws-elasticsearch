@@ -268,6 +268,13 @@ variable "log_publishing_options_enabled" {
   default     = true
 }
 
+variable "log_publishing_options_retention" {
+  description = "Retention in days for the created Cloudwatch log group"
+  type        = number
+  default     = 90
+}
+
+
 # cognito_options  
 variable "cognito_options" {
   description = "Options for Amazon Cognito Authentication for Kibana"
