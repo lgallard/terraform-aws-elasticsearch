@@ -96,6 +96,14 @@ module "aws_es" {
   }
 
 ```
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12.9 |
+| aws | >= 2.69.0 |
+
 ## Providers
 
 | Name | Version |
@@ -111,9 +119,9 @@ module "aws_es" {
 | advanced\_security\_options | Options for fine-grained access control | `any` | `{}` | no |
 | advanced\_security\_options\_enabled | Whether advanced security is enabled (Forces new resource) | `bool` | `false` | no |
 | advanced\_security\_options\_internal\_user\_database\_enabled | Whether the internal user database is enabled. If not set, defaults to false by the AWS API. | `bool` | `false` | no |
-| advanced\_security\_options\_master\_user\_arn | ARN for the master user. Only specify if `internal_user_database_enabled` is not set or set to `false`) | `string` | n/a | yes |
-| advanced\_security\_options\_master\_user\_password | The master user's password, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | n/a | yes |
-| advanced\_security\_options\_master\_user\_username | The master user's username, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | n/a | yes |
+| advanced\_security\_options\_master\_user\_arn | ARN for the master user. Only specify if `internal_user_database_enabled` is not set or set to `false`) | `string` | `null` | no |
+| advanced\_security\_options\_master\_user\_password | The master user's password, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | `null` | no |
+| advanced\_security\_options\_master\_user\_username | The master user's username, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | `null` | no |
 | cluster\_config | Cluster configuration of the domain | `map` | `{}` | no |
 | cluster\_config\_availability\_zone\_count | Number of Availability Zones for the domain to use with | `number` | `3` | no |
 | cluster\_config\_dedicated\_master\_count | Number of dedicated master nodes in the cluster | `number` | `3` | no |
@@ -121,9 +129,9 @@ module "aws_es" {
 | cluster\_config\_dedicated\_master\_type | Instance type of the dedicated master nodes in the cluster | `string` | `"r5.large.elasticsearch"` | no |
 | cluster\_config\_instance\_count | Number of instances in the cluster | `number` | `3` | no |
 | cluster\_config\_instance\_type | Instance type of data nodes in the cluster | `string` | `"r5.large.elasticsearch"` | no |
-| cluster\_config\_warm\_count | The number of warm nodes in the cluster | `number` | n/a | no |
+| cluster\_config\_warm\_count | The number of warm nodes in the cluster | `number` | `null` | no |
 | cluster\_config\_warm\_enabled | Indicates whether to enable warm storage | `bool` | `false` | no |
-| cluster\_config\_warm\_type | The instance type for the Elasticsearch cluster's warm nodes | `string` | n/a | no |
+| cluster\_config\_warm\_type | The instance type for the Elasticsearch cluster's warm nodes | `string` | `null` | no |
 | cluster\_config\_zone\_awareness\_enabled | Indicates whether zone awareness is enabled. To enable awareness with three Availability Zones | `bool` | `false` | no |
 | cognito\_options | Options for Amazon Cognito Authentication for Kibana | `map` | `{}` | no |
 | cognito\_options\_enabled | Specifies whether Amazon Cognito authentication with Kibana is enabled or not | `bool` | `false` | no |
@@ -155,7 +163,7 @@ module "aws_es" {
 | snapshot\_options\_automated\_snapshot\_start\_hour | Hour during which the service takes an automated daily snapshot of the indices in the domain | `number` | `0` | no |
 | tags | A mapping of tags to assign to the resource | `map` | `{}` | no |
 | timeouts | Timeouts map. | `map` | `{}` | no |
-| timeouts\_update | How long to wait for updates. | `string` | n/a | no |
+| timeouts\_update | How long to wait for updates. | `string` | `null` | no |
 | vpc\_options | VPC related options, see below. Adding or removing this configuration forces a new resource | `map` | `{}` | no |
 | vpc\_options\_security\_group\_ids | List of VPC Security Group IDs to be applied to the Elasticsearch domain endpoints. If omitted, the default Security Group for the VPC will be used | `list` | `[]` | no |
 | vpc\_options\_subnet\_ids | List of VPC Subnet IDs for the Elasticsearch domain endpoints to be created in | `list` | `[]` | no |

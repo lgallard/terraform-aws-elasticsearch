@@ -1,4 +1,10 @@
-## 0.6.0 (October 28, 2020)
+## 0.7.0 (January 8, 2021)
+
+ENHANCEMENTS:
+
+* Add retention configuration variable for Cloudwatch log group (thanks @elpaquete)
+
+## 0.6.1 (October 28, 2020)
 
 FIXES:
 
