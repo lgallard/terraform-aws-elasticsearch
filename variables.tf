@@ -18,6 +18,13 @@ variable "access_policies" {
   default     = ""
 }
 
+variable "enabled" {
+  description = "Change to false to avoid deploying any AWS ElasticSearch resources"
+  type        = bool
+  default     = true
+}
+
+
 # Advanced security options
 variable "advanced_security_options" {
   description = "Options for fine-grained access control"
