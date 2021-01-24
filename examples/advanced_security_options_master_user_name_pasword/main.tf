@@ -49,7 +49,7 @@ module "aws_es" {
     region      = data.aws_region.current.name,
     account     = data.aws_caller_identity.current.account_id,
     domain_name = var.es_domain_name,
-    whitelist   = "${jsonencode(var.whitelist)}"
+    whitelist   = jsonencode(var.whitelist)}
   })
 
   node_to_node_encryption_enabled                = "true"

@@ -1,3 +1,14 @@
+## 0.8.0 (January 24, 2021)
+
+
+ENHANCEMENTS:
+
+* Add support for conditional creation
+
+FIXES:
+
+* Update examples
+
 ## 0.7.1 (January 24, 2021)
 
 FIXES:

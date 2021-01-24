@@ -36,7 +36,7 @@ module "aws_es" {
 
   encrypt_at_rest = {
     enabled    = "true"
-    kms_key_id = "alias/aws/es"
+    kms_key_id = "arn:aws:kms:us-east-1:123456789101:key/cccc103b-4ba3-5993-6fc7-b7e538b25fd8"
   }
 
   log_publishing_options = {
@@ -148,6 +148,7 @@ module "aws_es" {
 | ebs\_options\_volume\_size | The size of EBS volumes attached to data nodes (in GB). Required if ebs\_enabled is set to true | `number` | `10` | no |
 | ebs\_options\_volume\_type | The type of EBS volumes attached to data nodes | `string` | `"gp2"` | no |
 | elasticsearch\_version | The version of Elasticsearch to deploy. | `string` | `"7.1"` | no |
+| enabled | Change to false to avoid deploying any AWS ElasticSearch resources | `bool` | `true` | no |
 | encrypt\_at\_rest | Encrypt at rest options. Only available for certain instance types | `map` | `{}` | no |
 | encrypt\_at\_rest\_enabled | Whether to enable encryption at rest | `bool` | `true` | no |
 | encrypt\_at\_rest\_kms\_key\_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified then it defaults to using the aws/es service KMS key | `string` | `"alias/aws/es"` | no |
