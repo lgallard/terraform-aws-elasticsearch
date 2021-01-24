@@ -20,7 +20,7 @@ module "aws_es" {
 
   encrypt_at_rest = {
     enabled    = "true"
-    kms_key_id = "alias/aws/es"
+    kms_key_id = "arn:aws:kms:us-east-1:123456789101:key/cccc103b-4ba3-5993-6fc7-b7e538b25fd8"
   }
 
   log_publishing_options = {
@@ -35,7 +35,7 @@ module "aws_es" {
     region      = data.aws_region.current.name,
     account     = data.aws_caller_identity.current.account_id,
     domain_name = var.es_domain_name,
-    whitelist   = "${jsonencode(var.whitelist)}"
+    whitelist   = jsonencode(var.whitelist)
   })
 
   node_to_node_encryption_enabled                = "true"

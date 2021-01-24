@@ -20,7 +20,7 @@ module "aws_es" {
 
   encrypt_at_rest = {
     enabled    = "true"
-    kms_key_id = "alias/aws/es"
+    kms_key_id = "arn:aws:kms:us-east-1:123456789101:key/cccc103b-4ba3-5993-6fc7-b7e538b25fd8"
   }
 
   vpc_options = {
