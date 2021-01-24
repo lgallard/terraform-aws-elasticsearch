@@ -96,7 +96,6 @@ module "aws_es" {
   }
 
 ```
-
 ## Requirements
 
 | Name | Version |

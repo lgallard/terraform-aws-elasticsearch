@@ -148,7 +148,7 @@ locals {
   # Create subblock master_user_options
   master_user_options = lookup(var.advanced_security_options, "master_user_options", null) != null ? lookup(var.advanced_security_options, "master_user_options") : {
     master_user_arn      = var.advanced_security_options_internal_user_database_enabled == false ? var.advanced_security_options_master_user_arn : null
-    master_user_username = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_username : null
+    master_user_name     = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_username : null
     master_user_password = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_password : null
   }
 
