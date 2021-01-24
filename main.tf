@@ -239,7 +239,7 @@ locals {
   # If no log_publishing_options list is provided, build a log_publishing_options using the default values
   log_publishing_options_default = {
     log_type                 = lookup(var.log_publishing_options, "log_type", null) == null ? var.log_publishing_options_log_type : lookup(var.log_publishing_options, "log_type")
-    cloudwatch_log_group_arn = lookup(var.log_publishing_options, "cloudwatch_log_group_arn", null) == null ? (var.log_publishing_options_cloudwatch_log_group_arn == "" ? aws_cloudwatch_log_group.es_cloudwatch_log_group.0.arn : var.log_publishing_options_cloudwatch_log_group_arn) : lookup(var.log_publishing_options, "cloudwatch_log_group_arn")
+    cloudwatch_log_group_arn = lookup(var.log_publishing_options, "cloudwatch_log_group_arn", null) == null ? (var.log_publishing_options_cloudwatch_log_group_arn == "" && var.enabled ? aws_cloudwatch_log_group.es_cloudwatch_log_group[0].arn : var.log_publishing_options_cloudwatch_log_group_arn) : lookup(var.log_publishing_options, "cloudwatch_log_group_arn")
     enabled                  = lookup(var.log_publishing_options, "enabled", null) == null ? var.log_publishing_options_enabled : lookup(var.log_publishing_options, "enabled")
   }
 
