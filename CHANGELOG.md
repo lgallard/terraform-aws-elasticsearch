@@ -1,3 +1,9 @@
+## 0.7.1 (January 24, 2021)
+
+FIXES:
+
+* Fix `master_user_name` reference in locals (thanks @rafaelmariotti)
+
 ## 0.7.0 (January 8, 2021)
 
 ENHANCEMENTS:
