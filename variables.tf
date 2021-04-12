@@ -81,6 +81,24 @@ variable "domain_endpoint_options_tls_security_policy" {
   default     = "Policy-Min-TLS-1-2-2019-07"
 }
 
+variable "domain_endpoint_options_custom_endpoint_enabled" {
+  description = "Whether to enable custom endpoint for the Elasticsearch domain"
+  type        = bool
+  default     = false
+}
+
+variable "domain_endpoint_options_custom_endpoint" {
+  description = "Fully qualified domain for your custom endpoint"
+  type        = string
+  default     = null
+}
+
+variable "domain_endpoint_options_custom_endpoint_certificate_arn" {
+  description = "ACM certificate ARN for your custom endpoint"
+  type        = string
+  default     = null
+}
+
 # Advanced options
 variable "advanced_options" {
   description = "Key-value string pairs to specify advanced configuration options. Note that the values for these configuration options must be strings (wrapped in quotes) or they may be wrong and cause a perpetual diff, causing Terraform to want to recreate your Elasticsearch domain on every apply"
