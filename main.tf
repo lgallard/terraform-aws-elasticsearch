@@ -33,8 +33,11 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "domain_endpoint_options" {
     for_each = local.domain_endpoint_options
     content {
-      enforce_https       = lookup(domain_endpoint_options.value, "enforce_https")
-      tls_security_policy = lookup(domain_endpoint_options.value, "tls_security_policy")
+      enforce_https                   = lookup(domain_endpoint_options.value, "enforce_https")
+      tls_security_policy             = lookup(domain_endpoint_options.value, "tls_security_policy")
+      custom_endpoint_enabled         = lookup(domain_endpoint_options.value, "custom_endpoint_enabled")
+      custom_endpoint                 = lookup(domain_endpoint_options.value, "custom_endpoint")
+      custom_endpoint_certificate_arn = lookup(domain_endpoint_options.value, "custom_endpoint_certificate_arn")
     }
   }
 
