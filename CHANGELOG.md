@@ -1,3 +1,11 @@
+## 0.9.0 (April 12, 2021)
+
+
+ENHANCEMENTS:
+
+* Add `custom_endpoint` support
+* Update examples
+
 ## 0.8.0 (January 24, 2021)
 
 
