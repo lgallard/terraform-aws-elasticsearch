@@ -20,7 +20,12 @@ module "aws_es" {
     }
   }
 
-  domain_endpoint_options_enforce_https = true
+  domain_endpoint_options = {
+    enforce_https                   = true
+    custom_endpoint_enabled         = true
+    custom_endpoint                 = "lgallardo.com"
+    custom_endpoint_certificate_arn = "arn:aws:acm:us-east-1:123456789101:certificate/abcd1234-ef11-abcd-1234-abcd1234efef"
+  }
 
   ebs_options = {
     ebs_enabled = "true"

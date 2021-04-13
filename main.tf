@@ -33,8 +33,11 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "domain_endpoint_options" {
     for_each = local.domain_endpoint_options
     content {
-      enforce_https       = lookup(domain_endpoint_options.value, "enforce_https")
-      tls_security_policy = lookup(domain_endpoint_options.value, "tls_security_policy")
+      enforce_https                   = lookup(domain_endpoint_options.value, "enforce_https")
+      tls_security_policy             = lookup(domain_endpoint_options.value, "tls_security_policy")
+      custom_endpoint_enabled         = lookup(domain_endpoint_options.value, "custom_endpoint_enabled")
+      custom_endpoint                 = lookup(domain_endpoint_options.value, "custom_endpoint")
+      custom_endpoint_certificate_arn = lookup(domain_endpoint_options.value, "custom_endpoint_certificate_arn")
     }
   }
 
@@ -168,6 +171,11 @@ locals {
   domain_endpoint_options_default = {
     enforce_https       = lookup(var.domain_endpoint_options, "enforce_https", null) == null ? var.domain_endpoint_options_enforce_https : lookup(var.domain_endpoint_options, "enforce_https")
     tls_security_policy = lookup(var.domain_endpoint_options, "tls_security_policy", null) == null ? var.domain_endpoint_options_tls_security_policy : lookup(var.domain_endpoint_options, "tls_security_policy")
+
+    # custom_endpoint
+    custom_endpoint_enabled         = lookup(var.domain_endpoint_options, "custom_endpoint_enabled", null) == null ? var.domain_endpoint_options_custom_endpoint_enabled : lookup(var.domain_endpoint_options, "custom_endpoint_enabled")
+    custom_endpoint                 = lookup(var.domain_endpoint_options, "custom_endpoint", null) == null ? var.domain_endpoint_options_custom_endpoint : lookup(var.domain_endpoint_options, "custom_endpoint")
+    custom_endpoint_certificate_arn = lookup(var.domain_endpoint_options, "custom_endpoint_certificate_arn", null) == null ? var.domain_endpoint_options_custom_endpoint_certificate_arn : lookup(var.domain_endpoint_options, "custom_endpoint_certificate_arn")
   }
 
   domain_endpoint_options = lookup(local.domain_endpoint_options_default, "enforce_https", false) == false ? [] : [local.domain_endpoint_options_default]

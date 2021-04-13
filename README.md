@@ -48,6 +48,13 @@ module "aws_es" {
     "rest.action.multi.allow_explicit_index" = "true"
   }
 
+  domain_endpoint_options = {
+    enforce_https                   = true
+    custom_endpoint_enabled         = true
+    custom_endpoint                 = "lgallardo.com"
+    custom_endpoint_certificate_arn = "arn:aws:acm:us-east-1:123456789101:certificate/abcd1234-ef11-abcd-1234-abcd1234efef"
+  }
+
   node_to_node_encryption_enabled                = "true"
   snapshot_options_automated_snapshot_start_hour = "23"
 
@@ -109,6 +116,20 @@ module "aws_es" {
 |------|---------|
 | aws | >= 2.69.0 |
 
+## Modules
+
+No Modules.
+
+## Resources
+
+| Name |
+|------|
+| [aws_cloudwatch_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) |
+| [aws_cloudwatch_log_resource_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_resource_policy) |
+| [aws_elasticsearch_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticsearch_domain) |
+| [aws_iam_service_linked_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_service_linked_role) |
+| [aws_kms_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/kms_key) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -139,6 +160,9 @@ module "aws_es" {
 | cognito\_options\_user\_pool\_id | ID of the Cognito User Pool to use | `string` | `""` | no |
 | create\_service\_link\_role | Create service link role for AWS Elasticsearch Service | `bool` | `true` | no |
 | domain\_endpoint\_options | Domain endpoint HTTP(S) related options. | `any` | `{}` | no |
+| domain\_endpoint\_options\_custom\_endpoint | Fully qualified domain for your custom endpoint | `string` | `null` | no |
+| domain\_endpoint\_options\_custom\_endpoint\_certificate\_arn | ACM certificate ARN for your custom endpoint | `string` | `null` | no |
+| domain\_endpoint\_options\_custom\_endpoint\_enabled | Whether to enable custom endpoint for the Elasticsearch domain | `bool` | `false` | no |
 | domain\_endpoint\_options\_enforce\_https | Whether or not to require HTTPS | `bool` | `false` | no |
 | domain\_endpoint\_options\_tls\_security\_policy | The name of the TLS security policy that needs to be applied to the HTTPS endpoint. Valid values: `Policy-Min-TLS-1-0-2019-07` and `Policy-Min-TLS-1-2-2019-07` | `string` | `"Policy-Min-TLS-1-2-2019-07"` | no |
 | domain\_name | Name of the domain | `string` | n/a | yes |
