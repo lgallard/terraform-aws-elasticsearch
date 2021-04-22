@@ -1,4 +1,4 @@
-# AWS Elasticsearch domain with Advanced Security Options using name and password example 
+# AWS Elasticsearch domain with Advanced Security Options using name and password example
 
 ```
 module "aws_es" {
