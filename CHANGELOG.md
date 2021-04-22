@@ -2,6 +2,7 @@
 
 ENHANCEMENTS:
 
+* Add pre-commit config file
 * Add .gitignore file
 * Update README
 
