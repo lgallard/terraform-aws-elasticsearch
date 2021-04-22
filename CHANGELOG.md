@@ -1,5 +1,16 @@
-## 0.9.0 (April 12, 2021)
+## 0.9.1 (April 22, 2021)
 
+ENHANCEMENTS:
+
+* Add pre-commit config file
+* Add .gitignore file
+* Update README
+
+FIXES:
+
+* Add AWS provider requirement (>= 3.35.0)
+
+## 0.9.0 (April 12, 2021)
 
 ENHANCEMENTS:
 

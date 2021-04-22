@@ -4,5 +4,3 @@ data "aws_caller_identity" "current" {}
 
 # To obtain the name of the AWS region configured on the provider
 data "aws_region" "current" {}
-
-

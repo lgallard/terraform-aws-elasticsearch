@@ -169,7 +169,7 @@ variable "node_to_node_encryption_enabled" {
   default     = true
 }
 
-# cluster_config 
+# cluster_config
 variable "cluster_config" {
   description = "Cluster configuration of the domain"
   type        = map
@@ -268,7 +268,7 @@ variable "vpc_options_subnet_ids" {
   default     = []
 }
 
-# log_publishing_options 
+# log_publishing_options
 variable "log_publishing_options" {
   description = "Options for publishing slow logs to CloudWatch Logs"
   type        = map
@@ -300,7 +300,7 @@ variable "log_publishing_options_retention" {
 }
 
 
-# cognito_options  
+# cognito_options
 variable "cognito_options" {
   description = "Options for Amazon Cognito Authentication for Kibana"
   type        = map

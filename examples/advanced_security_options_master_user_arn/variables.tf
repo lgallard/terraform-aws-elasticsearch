@@ -12,4 +12,3 @@ variable "es_version" {}
 variable "whitelist" {
   default = []
 }
-

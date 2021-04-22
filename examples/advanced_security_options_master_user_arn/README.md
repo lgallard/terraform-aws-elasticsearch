@@ -1,4 +1,4 @@
-# AWS Elasticsearch domain with Advanced Security Options using master user ARN example 
+# AWS Elasticsearch domain with Advanced Security Options using master user ARN example
 
 ```
 module "aws_es" {
