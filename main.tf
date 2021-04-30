@@ -85,9 +85,10 @@ resource "aws_elasticsearch_domain" "es_domain" {
 
       dynamic "zone_awareness_config" {
         # cluster_availability_zone_count valid values: 2 or 3.
-        for_each = lookup(cluster_config.value, "zone_awareness_enabled", false) == false || ! contains(["2", "3"], lookup(cluster_config.value, "availability_zone_count", "1")) ? [] : [1]
+        for_each = lookup(cluster_config.value, "zone_awareness_enabled", false) ? [1] : []
         content {
           availability_zone_count = lookup(cluster_config.value, "availability_zone_count")
+
         }
       }
     }

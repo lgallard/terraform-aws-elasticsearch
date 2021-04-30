@@ -1,3 +1,14 @@
+## 0.10.0 (April 30, 2021)
+
+ENHANCEMENTS:
+
+* Update config variables to support objects instead of maps values
+* Update README & examples
+
+FIXES:
+
+* Remove `availability_zone_count` constraint
+
 ## 0.9.1 (April 22, 2021)
 
 ENHANCEMENTS:

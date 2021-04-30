@@ -6,20 +6,20 @@ module "aws_es" {
   elasticsearch_version = var.es_version
 
   cluster_config = {
-    dedicated_master_enabled = "true"
-    instance_count           = "3"
+    dedicated_master_enabled = true
+    instance_count           = 3
     instance_type            = "r5.large.elasticsearch"
-    zone_awareness_enabled   = "true"
-    availability_zone_count  = "3"
+    zone_awareness_enabled   = true
+    availability_zone_count  = 3
   }
 
   ebs_options = {
-    ebs_enabled = "true"
-    volume_size = "25"
+    ebs_enabled = true
+    volume_size = 25
   }
 
   encrypt_at_rest = {
-    enabled    = "true"
+    enabled    = true
     kms_key_id = "arn:aws:kms:us-east-1:123456789101:key/cccc103b-4ba3-5993-6fc7-b7e538b25fd8"
   }
 
@@ -43,5 +43,4 @@ module "aws_es" {
     Owner = "sysops"
     env   = "dev"
   }
-
 }

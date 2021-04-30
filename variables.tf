@@ -109,7 +109,7 @@ variable "advanced_options" {
 # ebs_options
 variable "ebs_options" {
   description = "EBS related options, may be required based on chosen instance size"
-  type        = map
+  type        = any
   default     = {}
 }
 
@@ -140,7 +140,7 @@ variable "ebs_options_iops" {
 # encrypt_at_rest
 variable "encrypt_at_rest" {
   description = "Encrypt at rest options. Only available for certain instance types"
-  type        = map
+  type        = any
   default     = {}
 }
 
@@ -159,7 +159,7 @@ variable "encrypt_at_rest_kms_key_id" {
 # node_to_node_encryption
 variable "node_to_node_encryption" {
   description = "Node-to-node encryption options"
-  type        = map
+  type        = any
   default     = {}
 }
 
@@ -172,7 +172,7 @@ variable "node_to_node_encryption_enabled" {
 # cluster_config
 variable "cluster_config" {
   description = "Cluster configuration of the domain"
-  type        = map
+  type        = any
   default     = {}
 }
 
@@ -239,7 +239,7 @@ variable "cluster_config_warm_type" {
 # snapshot_options
 variable "snapshot_options" {
   description = "Snapshot related options"
-  type        = map
+  type        = any
   default     = {}
 }
 
@@ -252,26 +252,26 @@ variable "snapshot_options_automated_snapshot_start_hour" {
 # vpc_options
 variable "vpc_options" {
   description = "VPC related options, see below. Adding or removing this configuration forces a new resource"
-  type        = map
+  type        = any
   default     = {}
 }
 
 variable "vpc_options_security_group_ids" {
   description = "List of VPC Security Group IDs to be applied to the Elasticsearch domain endpoints. If omitted, the default Security Group for the VPC will be used"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "vpc_options_subnet_ids" {
   description = "List of VPC Subnet IDs for the Elasticsearch domain endpoints to be created in"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 # log_publishing_options
 variable "log_publishing_options" {
   description = "Options for publishing slow logs to CloudWatch Logs"
-  type        = map
+  type        = any
   default     = {}
 }
 
@@ -303,7 +303,7 @@ variable "log_publishing_options_retention" {
 # cognito_options
 variable "cognito_options" {
   description = "Options for Amazon Cognito Authentication for Kibana"
-  type        = map
+  type        = any
   default     = {}
 }
 
@@ -333,7 +333,7 @@ variable "cognito_options_role_arn" {
 
 variable "tags" {
   description = "A mapping of tags to assign to the resource"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -341,7 +341,7 @@ variable "tags" {
 # Timeouts
 variable "timeouts" {
   description = "Timeouts map."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
