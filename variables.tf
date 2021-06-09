@@ -24,6 +24,11 @@ variable "enabled" {
   default     = true
 }
 
+variable "cloudwatch_log_enabled" {
+  description = "Change to false to avoid deploying any Cloudwatch Logs resources"
+  type        = bool
+  default     = true
+}
 
 # Advanced security options
 variable "advanced_security_options" {
