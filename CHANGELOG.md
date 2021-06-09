@@ -1,3 +1,9 @@
+## 0.11.0 (June 8, 2021)
+
+ENHANCEMENTS:
+
+* Add support disabling CloudWatch Logs resources (thanks @AlexanderIakovlev)
+
 ## 0.10.0 (April 30, 2021)
 
 ENHANCEMENTS:
