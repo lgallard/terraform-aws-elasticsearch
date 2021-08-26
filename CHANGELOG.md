@@ -1,3 +1,9 @@
+## 0.12.1 (August 26, 2021)
+
+FIXES:
+
+*  Fix typo in examples
+
 ## 0.12.0 (August 26, 2021)
 
 ENHANCEMENTS:
