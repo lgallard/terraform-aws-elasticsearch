@@ -1,3 +1,9 @@
+## 0.12.0 (August 26, 2021)
+
+ENHANCEMENTS:
+
+* Add multiple log types support
+
 ## 0.11.0 (June 8, 2021)
 
 ENHANCEMENTS:

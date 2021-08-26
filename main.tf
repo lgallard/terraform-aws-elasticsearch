@@ -113,10 +113,12 @@ resource "aws_elasticsearch_domain" "es_domain" {
 
   # log_publishing_options
   dynamic "log_publishing_options" {
-    for_each = local.log_publishing_options
+    for_each = { for k, v in var.log_publishing_options :
+      k => v if var.enabled && lookup(v, "enabled", false)
+    }
     content {
-      log_type                 = lookup(log_publishing_options.value, "log_type")
-      cloudwatch_log_group_arn = lookup(log_publishing_options.value, "cloudwatch_log_group_arn")
+      log_type                 = upper(log_publishing_options.key)
+      cloudwatch_log_group_arn = lookup(log_publishing_options.value, "cloudwatch_log_group_arn", null) != null ? lookup(log_publishing_options.value, "cloudwatch_log_group_arn") : aws_cloudwatch_log_group.es_cloudwatch_log_group[log_publishing_options.key].arn
       enabled                  = lookup(log_publishing_options.value, "enabled")
     }
   }
@@ -144,9 +146,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   tags = var.tags
 
   # Service-linked role to give Amazon ES permissions to access your VPC
-  depends_on = [
-    aws_iam_service_linked_role.es,
-  ]
+  depends_on = [aws_iam_service_linked_role.es, aws_cloudwatch_log_group.es_cloudwatch_log_group]
 
 }
 
@@ -243,16 +243,6 @@ locals {
   }
 
   vpc_options = length(lookup(local.vpc_options_default, "subnet_ids")) == 0 ? [] : [local.vpc_options_default]
-
-  # log_publishing_options
-  # If no log_publishing_options list is provided, build a log_publishing_options using the default values
-  log_publishing_options_default = {
-    log_type                 = lookup(var.log_publishing_options, "log_type", null) == null ? var.log_publishing_options_log_type : lookup(var.log_publishing_options, "log_type")
-    cloudwatch_log_group_arn = lookup(var.log_publishing_options, "cloudwatch_log_group_arn", null) == null ? (var.log_publishing_options_cloudwatch_log_group_arn == "" && var.enabled && var.cloudwatch_log_enabled ? aws_cloudwatch_log_group.es_cloudwatch_log_group[0].arn : var.log_publishing_options_cloudwatch_log_group_arn) : lookup(var.log_publishing_options, "cloudwatch_log_group_arn")
-    enabled                  = lookup(var.log_publishing_options, "enabled", null) == null ? var.log_publishing_options_enabled : lookup(var.log_publishing_options, "enabled")
-  }
-
-  log_publishing_options = var.log_publishing_options_enabled == false || lookup(local.log_publishing_options_default, "enabled") == false ? [] : [local.log_publishing_options_default]
 
   # cognito_options
   # If no cognito_options list is provided, build a cognito_options using the default values

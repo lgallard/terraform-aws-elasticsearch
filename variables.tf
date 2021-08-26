@@ -280,23 +280,6 @@ variable "log_publishing_options" {
   default     = {}
 }
 
-variable "log_publishing_options_log_type" {
-  description = "A type of Elasticsearch log. Valid values: INDEX_SLOW_LOGS, SEARCH_SLOW_LOGS, ES_APPLICATION_LOGS"
-  type        = string
-  default     = "INDEX_SLOW_LOGS"
-}
-
-variable "log_publishing_options_cloudwatch_log_group_arn" {
-  description = "iARN of the Cloudwatch log group to which log needs to be published"
-  type        = string
-  default     = ""
-}
-
-variable "log_publishing_options_enabled" {
-  description = "Specifies whether given log publishing option is enabled or not"
-  type        = bool
-  default     = true
-}
 
 variable "log_publishing_options_retention" {
   description = "Retention in days for the created Cloudwatch log group"
