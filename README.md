@@ -43,7 +43,7 @@ module "aws_es" {
     index_slow_logs = {
       enabled                          = true
       cloudwatch_log_group_arn         = "arn:aws:logs:us-east-1:123456789101:log-group:/aws/elasticsearch/index_slow_logs:*"
-      rog_publishing_options_retention = 90
+      log_publishing_options_retention = 90
     }
     search_slow_logs = {
       enabled                  = true
