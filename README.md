@@ -40,8 +40,23 @@ module "aws_es" {
   }
 
   log_publishing_options = {
-    enabled                  = true
-    log_type                 = "INDEX_SLOW_LOGS"
+    index_slow_logs = {
+      enabled                          = true
+      cloudwatch_log_group_arn         = "arn:aws:logs:us-east-1:123456789101:log-group:/aws/elasticsearch/index_slow_logs:*"
+      rog_publishing_options_retention = 90
+    }
+    search_slow_logs = {
+      enabled                  = true
+      cloudwatch_log_group_arn = "arn:aws:logs:us-east-1:123456789101:log-group:/aws/elasticsearch/search_slow_logs:*"
+    }
+    es_application_logs = {
+      enabled                   = true
+      cloudwatch_log_group_name = "es_application_logs_dev"
+    }
+    audit_logs = {
+      enabled                   = false
+      cloudwatch_log_group_name = "audit_logs_dev"
+    }
   }
 
   advanced_options = {
