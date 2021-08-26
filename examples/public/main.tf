@@ -1,6 +1,6 @@
 module "aws_es" {
 
-  source = "lgallard/elasticsearch/aws"
+  source = "../../"
 
   domain_name           = var.es_domain_name
   elasticsearch_version = var.es_version
@@ -19,12 +19,28 @@ module "aws_es" {
   }
 
   encrypt_at_rest = {
-    enabled    = true
-    kms_key_id = "arn:aws:kms:us-east-1:123456789101:key/cccc103b-4ba3-5993-6fc7-b7e538b25fd8"
+    enabled = true
+    #kms_key_id = "arn:aws:kms:us-east-1:123456789101:key/cccc103b-4ba3-5993-6fc7-b7e538b25fd8"
   }
 
   log_publishing_options = {
-    enabled = true
+    index_slow_logs = {
+      enabled                          = true
+      cloudwatch_log_group_arn         = "arn:aws:logs:us-east-1:123456789101:log-group:/aws/elasticsearch/index_slow_logs:*"
+      rog_publishing_options_retention = 90
+    }
+    search_slow_logs = {
+      enabled                  = true
+      cloudwatch_log_group_arn = "arn:aws:logs:us-east-1:123456789101:log-group:/aws/elasticsearch/search_slow_logs:*"
+    }
+    es_application_logs = {
+      enabled                   = true
+      cloudwatch_log_group_name = "es_application_logs_dev"
+    }
+    audit_logs = {
+      enabled                   = false
+      cloudwatch_log_group_name = "audit_logs_dev"
+    }
   }
 
   advanced_options = {
