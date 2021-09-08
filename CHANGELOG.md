@@ -1,3 +1,9 @@
+## 0.12.2 (August 26, 2021)
+
+FIXES:
+
+* Fix "for_each" depends on resource attributes that cannot be  determined until apply (thanks @venky999)
+
 ## 0.12.1 (August 26, 2021)
 
 FIXES:
