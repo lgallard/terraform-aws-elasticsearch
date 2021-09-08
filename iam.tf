@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "es_cloudwatch_log_group" {
 
   for_each = { for k, v in var.log_publishing_options :
-    k => v if var.enabled && lookup(v, "enabled", false) && lookup(v, "cloudwatch_log_group_arn", null) == null
+    k => v if var.enabled && lookup(v, "enabled", false) && lookup(v, "cloudwatch_log_group_name", null) != null
   }
 
-  name              = lookup(each.value, "cloudwatch_log_group_name", null)
+  name              = each.value["cloudwatch_log_group_name"]
   retention_in_days = lookup(each.value, "log_publishing_options_retention", var.log_publishing_options_retention)
   tags              = merge(lookup(each.value, "tags", null), var.tags)
 }
