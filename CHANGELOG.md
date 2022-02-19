@@ -1,3 +1,9 @@
+## 0.12.3 (Feb 19, 2022)
+
+ENHANCEMENTS:
+
+* Update required provider syntax
+
 ## 0.12.2 (August 26, 2021)
 
 FIXES:
