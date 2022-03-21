@@ -150,13 +150,21 @@ resource "aws_elasticsearch_domain" "es_domain" {
 
 }
 
+resource "random_password" "master_password" {
+  count = local.create_random_master_password ? 1 : 0
+
+  length  = var.advanced_security_options_random_master_password_length
+  special = true
+}
+
 locals {
   # advanced_security_options
   # Create subblock master_user_options
+  create_random_master_password = var.advanced_security_options_enabled && var.advanced_security_options_internal_user_database_enabled && var.advanced_security_options_create_random_master_password
   master_user_options = lookup(var.advanced_security_options, "master_user_options", null) != null ? lookup(var.advanced_security_options, "master_user_options") : {
     master_user_arn      = var.advanced_security_options_internal_user_database_enabled == false ? var.advanced_security_options_master_user_arn : null
     master_user_name     = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_username : null
-    master_user_password = var.advanced_security_options_internal_user_database_enabled == true ? var.advanced_security_options_master_user_password : null
+    master_user_password = local.create_random_master_password == true ? random_password.master_password[0].result : var.advanced_security_options_master_user_password
   }
 
   # If advanced_security_options is provided, build an advanced_security_options using the default values
