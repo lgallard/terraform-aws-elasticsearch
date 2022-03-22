@@ -20,12 +20,12 @@ output "kibana_endpoint" {
 
 output "master_username" {
   description = "Master username"
-  value       = lookup(local.master_user_options, "master_user_name")
+  value       = local.master_user_name
 }
 
 output "master_password" {
   description = "Master password"
-  value       = lookup(local.master_user_options, "master_user_password")
+  value       = local.master_user_password
   sensitive = true
 }
 
