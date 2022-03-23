@@ -67,6 +67,18 @@ variable "advanced_security_options_master_user_password" {
   default     = null
 }
 
+variable "advanced_security_options_create_random_master_password" {
+  description = "Whether to create random master password for Elasticsearch master user"
+  type        = bool
+  default     = false
+}
+
+variable "advanced_security_options_random_master_password_length" {
+  description = "Length of random master password to create"
+  type        = number
+  default     = 16
+}
+
 # Domain endpoint options
 variable "domain_endpoint_options" {
   description = "Domain endpoint HTTP(S) related options."

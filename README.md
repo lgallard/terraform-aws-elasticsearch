@@ -158,6 +158,8 @@ No modules.
 | <a name="input_advanced_security_options_master_user_arn"></a> [advanced\_security\_options\_master\_user\_arn](#input\_advanced\_security\_options\_master\_user\_arn) | ARN for the master user. Only specify if `internal_user_database_enabled` is not set or set to `false`) | `string` | `null` | no |
 | <a name="input_advanced_security_options_master_user_password"></a> [advanced\_security\_options\_master\_user\_password](#input\_advanced\_security\_options\_master\_user\_password) | The master user's password, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | `null` | no |
 | <a name="input_advanced_security_options_master_user_username"></a> [advanced\_security\_options\_master\_user\_username](#input\_advanced\_security\_options\_master\_user\_username) | The master user's username, which is stored in the Amazon Elasticsearch Service domain's internal database. Only specify if `internal_user_database_enabled` is set to `true`. | `string` | `null` | no |
+| <a name="input_advanced_security_options_create_random_master_password"></a> [advanced\_security\_options\_create\_random\_master\_password](#input\_advanced\_security\_options\_create\_random\_master\_password) | Whether to create random master password for Elasticsearch master user | `bool` | `false` | no |
+| <a name="input_advanced_security_options_random_master_password_length"></a> [advanced\_security\_options\_random\_master\_password\_length](#advanced\_security\_options\_random\_master\_password\_length) | Length of random master password to create | `number` | `16` | no |
 | <a name="input_cloudwatch_log_enabled"></a> [cloudwatch\_log\_enabled](#input\_cloudwatch\_log\_enabled) | Change to false to avoid deploying any Cloudwatch Logs resources | `bool` | `true` | no |
 | <a name="input_cluster_config"></a> [cluster\_config](#input\_cluster\_config) | Cluster configuration of the domain | `any` | `{}` | no |
 | <a name="input_cluster_config_availability_zone_count"></a> [cluster\_config\_availability\_zone\_count](#input\_cluster\_config\_availability\_zone\_count) | Number of Availability Zones for the domain to use with | `number` | `3` | no |
@@ -213,6 +215,8 @@ No modules.
 | <a name="output_arn"></a> [arn](#output\_arn) | Amazon Resource Name (ARN) of the domain |
 | <a name="output_domain_id"></a> [domain\_id](#output\_domain\_id) | Unique identifier for the domain |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Domain-specific endpoint used to submit index, search, and data upload requests |
+| <a name="master_username"></a> [master_username](#master\_username) | Master username (if internal database master user enabled) |
+| <a name="master_password"></a> [master_password](#master\_password) | Master password (if internal database master user enabled) |
 | <a name="output_kibana_endpoint"></a> [kibana\_endpoint](#output\_kibana\_endpoint) | Domain-specific endpoint for kibana without https scheme |
 | <a name="output_vpc_options_availability_zones"></a> [vpc\_options\_availability\_zones](#output\_vpc\_options\_availability\_zones) | If the domain was created inside a VPC, the names of the availability zones the configured subnet\_ids were created inside |
 | <a name="output_vpc_options_vpc_id"></a> [vpc\_options\_vpc\_id](#output\_vpc\_options\_vpc\_id) | If the domain was created inside a VPC, the ID of the VPC |
