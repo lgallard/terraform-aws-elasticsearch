@@ -26,7 +26,7 @@ output "master_username" {
 output "master_password" {
   description = "Master password"
   value       = local.master_user_password
-  sensitive = true
+  sensitive   = true
 }
 
 output "vpc_options_availability_zones" {
