@@ -1,8 +1,16 @@
-## 0.13.0 (June 10, 2022)
+## 0.14.0 (June 10, 2022)
 
 ENHANCEMENTS:
 
 * Add support and example for `cold_storage_options`
+
+## 0.13.0 (March 22, 2022)
+
+ENHANCEMENTS:
+
+* Add Ability to have random master password (thanks @serge-r)
+* Update pre-commit protocol repo to use https:// instead of git://
+
 
 ## 0.12.2 (August 26, 2021)
 
