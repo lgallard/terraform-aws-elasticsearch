@@ -83,6 +83,13 @@ resource "aws_elasticsearch_domain" "es_domain" {
       warm_count               = lookup(cluster_config.value, "warm_count")
       warm_type                = lookup(cluster_config.value, "warm_type")
 
+      dynamic "cold_storage_options" {
+        for_each = lookup(cluster_config.value, "cold_storage_options_enabled", false) ? [1] : []
+        content {
+          enabled = lookup(cluster_config.value, "cold_storage_options_enabled", false)
+        }
+      }
+
       dynamic "zone_awareness_config" {
         # cluster_availability_zone_count valid values: 2 or 3.
         for_each = lookup(cluster_config.value, "zone_awareness_enabled", false) ? [1] : []

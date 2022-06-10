@@ -1,3 +1,9 @@
+## 0.13.0 (June 10, 2022)
+
+ENHANCEMENTS:
+
+* Add support and exmaple for `cold_storage_options`
+
 ## 0.12.2 (August 26, 2021)
 
 FIXES:
