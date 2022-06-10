@@ -2,7 +2,7 @@
 
 ENHANCEMENTS:
 
-* Add support and exmaple for `cold_storage_options`
+* Add support and example for `cold_storage_options`
 
 ## 0.12.2 (August 26, 2021)
 
