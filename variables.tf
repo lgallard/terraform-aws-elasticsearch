@@ -253,6 +253,12 @@ variable "cluster_config_warm_type" {
   default     = null
 }
 
+variable "cluster_config_cold_storage_options_enabled" {
+  description = "Indicates whether to enable cold storage for an Elasticsearch domain"
+  type        = bool
+  default     = false
+}
+
 # snapshot_options
 variable "snapshot_options" {
   description = "Snapshot related options"
