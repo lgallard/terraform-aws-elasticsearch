@@ -1,3 +1,9 @@
+## 0.14.1 (June 14, 2022)
+
+FIXES:
+
+* Add variables and parameters for `cold_storage` configuration (thanks @AlKapkone)
+
 ## 0.14.0 (June 10, 2022)
 
 ENHANCEMENTS:
