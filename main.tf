@@ -141,6 +141,19 @@ resource "aws_elasticsearch_domain" "es_domain" {
     }
   }
 
+  # auto_tune_options
+  dynamic "auto_tune_options" {
+    for_each = local.auto_tune_options
+    content {
+      desired_state = lookup(auto_tune_options.desired_state, "ENABLED")
+      maintenance_schedule {
+        start_at = lookup(auto_tune_options.value, "start_at")
+        value= lookup(lookup(auto_tune_options.value, "duration"), "duration_value", null)
+        unit = lookup(lookup(auto_tune_options.value, "duration"), "duration_unit", null)
+      }
+    }
+  }
+
   # Timeouts
   dynamic "timeouts" {
     for_each = local.timeouts
@@ -279,8 +292,8 @@ locals {
   auto_tune_options_default = {
     desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
     start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
-    value = lookup(var.auto_tune_options, "value", null) == null ? var.auto_tune_options_value : lookup(var.auto_tune_options, "value")
-    units = "HOURS"
+    duration_value = lookup(var.auto_tune_options, "value", null) == null ? var.auto_tune_options_value : lookup(var.auto_tune_options, "value")
+    duration_unit = "HOURS"
   }
 
   auto_tune_options = lookup(local.auto_tune_options_default, "desired_state", "DISABLED") == "DISABLED" ? [] : [local.auto_tune_options_default]
