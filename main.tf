@@ -275,6 +275,16 @@ locals {
 
   cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", false) == false ? [] : [local.cognito_options_default]
 
+  # If auto_tune_options is provided, build an auto_tune_options using the default values
+  auto_tune_options_default = {
+    desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
+    start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
+    value = lookup(var.auto_tune_options, "value", null) == null ? var.auto_tune_options_value : lookup(var.auto_tune_options, "value")
+    units = "HOURS"
+  }
+
+  auto_tune_options = lookup(local.auto_tune_options_default, "desired_state", "DISABLED") == "DISABLED" ? [] : [local.auto_tune_options_default]
+
   # Timeouts
   # If timeouts block is provided, build one using the default values
   timeouts = var.timeouts_update == null && length(var.timeouts) == 0 ? [] : [
