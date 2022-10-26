@@ -381,7 +381,7 @@ variable "auto_tune_options_desired_state" {
 variable "auto_tune_options_start_at" {
   description = "Timestamp in which the maintenance window starts"
   type = string
-  default = ""
+  default = null
 }
 
 variable "auto_tune_options_duration_value" {
@@ -393,5 +393,5 @@ variable "auto_tune_options_duration_value" {
 variable "auto_tune_options_cron_expression_for_recurrence" {
   description = "Recurrence cron expression for maintenance"
   type = string
-  default = ""
+  default = null
 }
