@@ -296,12 +296,12 @@ locals {
   start_at = var.auto_tune_options_desired_state == "ENABLED" ? var.auto_tune_options_start_at : null
   cron_expression_for_recurrence = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_cron_expression_for_recurrence : null
 
-  duration = lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") != null ? lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") : {
+  duration = lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration", null) != null ? lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") : {
     value = local.duration_value
     unit = "HOURS"
   }
 
-  maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.advanced_security_options, "maintenance_schedule") : {
+  maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule") : {
     start_at      = local.start_at
     duration     = local.duration
     cron_expression_for_recurrence = local.cron_expression_for_recurrence
