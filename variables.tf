@@ -389,3 +389,9 @@ variable "auto_tune_options_value" {
   type = number
   default = null
 }
+
+variable "cron_expression_for_recurrence" {
+  description = "Recurrence cron expression for maintenance"
+  type = string
+  default = ""
+}
