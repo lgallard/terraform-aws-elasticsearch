@@ -145,7 +145,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "auto_tune_options" {
     for_each = local.auto_tune_options
     content {
-      desired_state = lookup(auto_tune_options.value, "ENABLED")
+      desired_state = lookup(auto_tune_options.value, "desired_state")
       maintenance_schedule {
         start_at = lookup(auto_tune_options.value, "start_at")
         duration {
