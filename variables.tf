@@ -363,3 +363,29 @@ variable "create_service_link_role" {
   type        = bool
   default     = true
 }
+
+
+# Auto-tune
+variable "auto_tune_options" {
+  description = "Options for auto-tune configuration"
+  type        = any
+  default     = {}
+}
+
+variable "auto_tune_options_desired_state" {
+  description = "Whether auto-tune is enabled or not"
+  type = string
+  default = "ENABLED"
+}
+
+variable "auto_tune_options_start_at" {
+  description = "Timestamp in which the maintenance window starts"
+  type = string
+  default = ""
+}
+
+variable "auto_tune_options_value" {
+  description = "Duration of the maintenance window"
+  type = number
+  default = null
+}
