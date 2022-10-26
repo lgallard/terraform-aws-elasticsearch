@@ -384,13 +384,13 @@ variable "auto_tune_options_start_at" {
   default = ""
 }
 
-variable "auto_tune_options_value" {
+variable "auto_tune_options_duration_value" {
   description = "Duration of the maintenance window"
   type = number
   default = null
 }
 
-variable "cron_expression_for_recurrence" {
+variable "auto_tune_options_cron_expression_for_recurrence" {
   description = "Recurrence cron expression for maintenance"
   type = string
   default = ""

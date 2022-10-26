@@ -295,7 +295,7 @@ locals {
   auto_tune_options_default = {
     desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
     start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
-    duration_value = lookup(var.auto_tune_options, "value", null) == null ? var.auto_tune_options_value : lookup(var.auto_tune_options, "value")
+    duration_value = lookup(var.auto_tune_options, "value", null) == null ? var.auto_tune_options_duration_value : lookup(var.auto_tune_options, "value")
     duration_unit = "HOURS"
     cron_expression_for_recurrence = lookup(var.auto_tune_options, "cron_expression_for_recurrence", null) == null ? var.auto_tune_cron_expression_for_recurrence : lookup(var.auto_tune_options, "cron_expression_for_recurrence")
   }
