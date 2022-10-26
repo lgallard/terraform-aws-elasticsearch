@@ -149,7 +149,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
       maintenance_schedule {
         start_at = lookup(auto_tune_options.value, "start_at")
         duration {
-          value= lookup(auto_tune_options.value, "duration_value")
+          value = lookup(auto_tune_options.value, "duration_value")
           unit = lookup(auto_tune_options.value, "duration_unit")
         }
         cron_expression_for_recurrence = lookup(auto_tune_options.value, "cron_expression_for_recurrence")
@@ -290,6 +290,22 @@ locals {
   }
 
   cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", false) == false ? [] : [local.cognito_options_default]
+
+  # Create subblock master_user_options
+  duration_value = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_duration_value : null
+  start_at = var.auto_tune_options_desired_state == "ENABLED" ? auto_tune_options_start_at : null
+  cron_expression_for_recurrence = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_cron_expression_for_recurrence : null
+
+  duration = lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") != null ? lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") : {
+    value = local.duration_value
+    unit = "HOURS"
+  }
+
+  maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.advanced_security_options, "maintenance_schedule") : {
+    start_at      = local.start_at
+    duration     = local.duration
+    cron_expression_for_recurrence = local.cron_expression_for_recurrence
+  }
 
   # If auto_tune_options is provided, build an auto_tune_options using the default values
   auto_tune_options_default = {
