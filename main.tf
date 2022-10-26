@@ -145,14 +145,14 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "auto_tune_options" {
     for_each = local.auto_tune_options
     content {
-      desired_state = lookup(var.auto_tune_options.value, "desired_state", "ENABLED")
+      desired_state = lookup(auto_tune_options.value, "desired_state", "ENABLED")
       maintenance_schedule {
-        start_at = lookup(lookup(var.auto_tune_options.value, "maintenance_schedule"), "start_at", null)
+        start_at = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "start_at", null)
         duration {
-          value = lookup(lookup(lookup(var.auto_tune_options.value, "maintenance_schedule"), "duration"), "value", null)
-          unit = lookup(lookup(lookup(var.auto_tune_options.value, "maintenance_schedule"), "duration"),"unit", null)
+          value = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"), "value", null)
+          unit = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"),"unit", null)
         }
-        cron_expression_for_recurrence = lookup(lookup(var.auto_tune_options.value, "maintenance_schedule"), "cron_expression_for_recurrence", null)
+        cron_expression_for_recurrence = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "cron_expression_for_recurrence", null)
       }
     }
   }
@@ -310,10 +310,11 @@ locals {
   # If auto_tune_options is provided, build an auto_tune_options using the default values
   auto_tune_options_default = {
     desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
-    start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
-    duration_value = lookup(var.auto_tune_options, "duration_value", null) == null ? var.auto_tune_options_duration_value : lookup(var.auto_tune_options, "duration_value")
-    duration_unit = "HOURS"
-    cron_expression_for_recurrence = lookup(var.auto_tune_options, "cron_expression_for_recurrence", null) == null ? var.auto_tune_options_cron_expression_for_recurrence : lookup(var.auto_tune_options, "cron_expression_for_recurrence")
+    maintenance_schedule = local.maintenance_schedule
+    # start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
+    # duration_value = lookup(var.auto_tune_options, "duration_value", null) == null ? var.auto_tune_options_duration_value : lookup(var.auto_tune_options, "duration_value")
+    # duration_unit = "HOURS"
+    # cron_expression_for_recurrence = lookup(var.auto_tune_options, "cron_expression_for_recurrence", null) == null ? var.auto_tune_options_cron_expression_for_recurrence : lookup(var.auto_tune_options, "cron_expression_for_recurrence")
   }
 
   auto_tune_options = lookup(local.auto_tune_options_default, "desired_state", "DISABLED") == "DISABLED" ? [] : [local.auto_tune_options_default]
