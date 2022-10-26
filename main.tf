@@ -145,14 +145,14 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "auto_tune_options" {
     for_each = local.auto_tune_options
     content {
-      desired_state = lookup(auto_tune_options.desired_state, "ENABLED")
+      desired_state = lookup(auto_tune_options.value, "ENABLED")
       maintenance_schedule {
-        start_at = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "start_at")
+        start_at = lookup(auto_tune_options.value, "start_at")
         duration {
-          value= lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"), "duration_value")
-          unit = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"), "duration_unit")
+          value= lookup(auto_tune_options.value, "duration_value")
+          unit = lookup(auto_tune_options.value, "duration_unit")
         }
-        cron_expression_for_recurrence = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "cron_expression_for_recurrence")
+        cron_expression_for_recurrence = lookup(auto_tune_options.value, "cron_expression_for_recurrence")
       }
     }
   }
@@ -295,7 +295,7 @@ locals {
   auto_tune_options_default = {
     desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
     start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
-    duration_value = lookup(var.auto_tune_options, "value", null) == null ? var.auto_tune_options_duration_value : lookup(var.auto_tune_options, "value")
+    duration_value = lookup(var.auto_tune_options, "duration_value", null) == null ? var.auto_tune_options_duration_value : lookup(var.auto_tune_options, "duration_value")
     duration_unit = "HOURS"
     cron_expression_for_recurrence = lookup(var.auto_tune_options, "cron_expression_for_recurrence", null) == null ? var.auto_tune_options_cron_expression_for_recurrence : lookup(var.auto_tune_options, "cron_expression_for_recurrence")
   }
