@@ -293,8 +293,10 @@ locals {
 
   # Create subblock master_user_options
   duration_value = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_duration_value : null
-  start_at = var.auto_tune_options_desired_state == "ENABLED" ? var.auto_tune_options_start_at : null
-  cron_expression_for_recurrence = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_cron_expression_for_recurrence : null
+  # start_at = var.auto_tune_options_desired_state == "ENABLED" ? var.auto_tune_options_start_at : null
+  start_at = "2022-10-25T04:00:00.00Z"
+  # cron_expression_for_recurrence = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_cron_expression_for_recurrence : null
+  cron_expression_for_recurrence = "0 4 * * MON"
 
   duration = lookup(var.auto_tune_options, "maintenance_schedule.duration", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule.duration") : {
     # value = local.duration_value
