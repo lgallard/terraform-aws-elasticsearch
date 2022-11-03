@@ -34,14 +34,14 @@ resource "aws_elasticsearch_domain" "es_domain" {
     for_each = local.auto_tune_options
     content {
       desired_state = lookup(auto_tune_options.value, "desired_state")
-      maintenance_schedule {
-        start_at = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "start_at", null)
-        duration {
-          value = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"), "value", null)
-          unit = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"),"unit", null)
-        }
-        cron_expression_for_recurrence = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "cron_expression_for_recurrence", null)
-      }
+      # maintenance_schedule {
+      #   start_at = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "start_at", null)
+      #   duration {
+      #     value = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"), "value", null)
+      #     unit = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"),"unit", null)
+      #   }
+      #   cron_expression_for_recurrence = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "cron_expression_for_recurrence", null)
+      # }
     }
   }
 
