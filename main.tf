@@ -220,6 +220,7 @@ locals {
 
   maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule") : {
     start_at      = local.start_at
+    duration = {}
     # duration     = local.duration
     # cron_expression_for_recurrence = local.cron_expression_for_recurrence
   }
