@@ -29,6 +29,22 @@ resource "aws_elasticsearch_domain" "es_domain" {
     }
   }
 
+  # auto_tune_options
+  dynamic "auto_tune_options" {
+    for_each = local.auto_tune_options
+    content {
+      desired_state = lookup(auto_tune_options.value, "desired_state")
+      maintenance_schedule {
+        start_at = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "start_at", null)
+        duration {
+          value = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"), "value", null)
+          unit = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"),"unit", null)
+        }
+        cron_expression_for_recurrence = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "cron_expression_for_recurrence", null)
+      }
+    }
+  }
+
   # domain_endpoint_options
   dynamic "domain_endpoint_options" {
     for_each = local.domain_endpoint_options
@@ -141,22 +157,6 @@ resource "aws_elasticsearch_domain" "es_domain" {
     }
   }
 
-  # auto_tune_options
-  dynamic "auto_tune_options" {
-    for_each = local.auto_tune_options
-    content {
-      desired_state = lookup(auto_tune_options.value, "desired_state", "ENABLED")
-      maintenance_schedule {
-        start_at = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "start_at", null)
-        duration {
-          value = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"), "value", null)
-          unit = lookup(lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "duration"),"unit", null)
-        }
-        cron_expression_for_recurrence = lookup(lookup(auto_tune_options.value, "maintenance_schedule"), "cron_expression_for_recurrence", null)
-      }
-    }
-  }
-
   # Timeouts
   dynamic "timeouts" {
     for_each = local.timeouts
@@ -202,6 +202,39 @@ locals {
   }
 
   advanced_security_options = lookup(local.advanced_security_options_default, "enabled", false) == false ? [] : [local.advanced_security_options_default]
+
+  # Create subblock master_user_options
+  # duration_value = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_duration_value : null
+  # duration_value = lookup(var.auto_tune_options, "maintenance_schedule", null) != null && lookup(var.auto_tune_options.maintenance_schedule, "duration", null) != null && lookup(var.auto_tune_options.maintenance_schedule.duration, "value", null) != null ? lookup(var.auto_tune_options.maintenance_schedule.duration, "value") : var.auto_tune_options_duration_value
+  # duration_value = 3
+  start_at = var.auto_tune_options_desired_state == "ENABLED" ? var.auto_tune_options_start_at : null
+  # start_at = "2022-10-25T04:00:00.00Z"
+  # cron_expression_for_recurrence = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_cron_expression_for_recurrence : null
+  # cron_expression_for_recurrence = "0 4 * * MON"
+
+  duration = lookup(lookup(var.auto_tune_options, "maintenance_schedule", {}), "duration", null) != null ? lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") : {
+    value = local.duration_value
+    # value = 3
+    unit = "HOURS"
+  }
+
+  maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule") : {
+    start_at      = local.start_at
+    duration     = local.duration
+    cron_expression_for_recurrence = local.cron_expression_for_recurrence
+  }
+
+  # If auto_tune_options is provided, build an auto_tune_options using the default values
+  auto_tune_options_default = {
+    desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
+    # maintenance_schedule = local.maintenance_schedule
+    # start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
+    # duration_value = lookup(var.auto_tune_options, "duration_value", null) == null ? var.auto_tune_options_duration_value : lookup(var.auto_tune_options, "duration_value")
+    # duration_unit = "HOURS"
+    # cron_expression_for_recurrence = lookup(var.auto_tune_options, "cron_expression_for_recurrence", null) == null ? var.auto_tune_options_cron_expression_for_recurrence : lookup(var.auto_tune_options, "cron_expression_for_recurrence")
+  }
+
+  auto_tune_options = [local.auto_tune_options_default]
 
   # If domain_endpoint_options is provided, build an domain_endpoint_options using the default values
   domain_endpoint_options_default = {
@@ -290,39 +323,6 @@ locals {
   }
 
   cognito_options = var.cognito_options_enabled == false || lookup(local.cognito_options_default, "enabled", false) == false ? [] : [local.cognito_options_default]
-
-  # Create subblock master_user_options
-  # duration_value = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_duration_value : null
-  duration_value = lookup(var.auto_tune_options, "maintenance_schedule", null) != null && lookup(var.auto_tune_options.maintenance_schedule, "duration", null) != null && lookup(var.auto_tune_options.maintenance_schedule.duration, "value", null) != null ? lookup(var.auto_tune_options.maintenance_schedule.duration, "value") : var.auto_tune_options_duration_value
-  # duration_value = 3
-  # start_at = var.auto_tune_options_desired_state == "ENABLED" ? var.auto_tune_options_start_at : null
-  start_at = "2022-10-25T04:00:00.00Z"
-  # cron_expression_for_recurrence = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_cron_expression_for_recurrence : null
-  cron_expression_for_recurrence = "0 4 * * MON"
-
-  duration = lookup(lookup(var.auto_tune_options, "maintenance_schedule", {}), "duration", null) != null ? lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") : {
-    value = local.duration_value
-    # value = 3
-    unit = "HOURS"
-  }
-
-  maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule") : {
-    start_at      = local.start_at
-    duration     = local.duration
-    cron_expression_for_recurrence = local.cron_expression_for_recurrence
-  }
-
-  # If auto_tune_options is provided, build an auto_tune_options using the default values
-  auto_tune_options_default = {
-    desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
-    maintenance_schedule = local.maintenance_schedule
-    # start_at = lookup(var.auto_tune_options, "start_at", null) == null ? var.auto_tune_options_start_at : lookup(var.auto_tune_options, "start_at")
-    # duration_value = lookup(var.auto_tune_options, "duration_value", null) == null ? var.auto_tune_options_duration_value : lookup(var.auto_tune_options, "duration_value")
-    # duration_unit = "HOURS"
-    # cron_expression_for_recurrence = lookup(var.auto_tune_options, "cron_expression_for_recurrence", null) == null ? var.auto_tune_options_cron_expression_for_recurrence : lookup(var.auto_tune_options, "cron_expression_for_recurrence")
-  }
-
-  auto_tune_options = [local.auto_tune_options_default]
 
   # Timeouts
   # If timeouts block is provided, build one using the default values
