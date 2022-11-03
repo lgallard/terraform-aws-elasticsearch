@@ -368,7 +368,7 @@ variable "create_service_link_role" {
 # Auto-tune
 variable "auto_tune_options" {
   description = "Options for auto-tune configuration"
-  type        = any
+  type        = map(any)
   default     = {}
 }
 
