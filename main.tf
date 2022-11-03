@@ -219,14 +219,14 @@ locals {
   #   # value = 3
   #   unit = "HOURS"
   # }
+  duration = {
+    value = 10
+    unit = "HOURS"
+  }
 
   maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule") : {
     start_at      = local.start_at
-    duration = {
-      value = 1
-      unit = "HOURS"
-    }
-    # duration     = local.duration
+    duration     = local.duration
     cron_expression_for_recurrence = local.cron_expression_for_recurrence
   }
 
