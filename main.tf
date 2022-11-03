@@ -207,22 +207,22 @@ locals {
   # duration_value = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_duration_value : null
   # duration_value = lookup(var.auto_tune_options, "maintenance_schedule", null) != null && lookup(var.auto_tune_options.maintenance_schedule, "duration", null) != null && lookup(var.auto_tune_options.maintenance_schedule.duration, "value", null) != null ? lookup(var.auto_tune_options.maintenance_schedule.duration, "value") : var.auto_tune_options_duration_value
   # duration_value = 3
-  start_at = var.auto_tune_options_desired_state == "ENABLED" ? var.auto_tune_options_start_at : null
+  # start_at = var.auto_tune_options_desired_state == "ENABLED" ? var.auto_tune_options_start_at : null
   # start_at = "2022-10-25T04:00:00.00Z"
   # cron_expression_for_recurrence = var.auto_tune_options_desired_state == "ENABLED" && var.auto_tune_options_start_at != null ? var.auto_tune_options_cron_expression_for_recurrence : null
   # cron_expression_for_recurrence = "0 4 * * MON"
 
-  duration = lookup(lookup(var.auto_tune_options, "maintenance_schedule", {}), "duration", null) != null ? lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") : {
-    value = local.duration_value
-    # value = 3
-    unit = "HOURS"
-  }
+  # duration = lookup(lookup(var.auto_tune_options, "maintenance_schedule", {}), "duration", null) != null ? lookup(lookup(var.auto_tune_options, "maintenance_schedule"), "duration") : {
+  #   value = local.duration_value
+  #   # value = 3
+  #   unit = "HOURS"
+  # }
 
-  maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule") : {
-    start_at      = local.start_at
-    duration     = local.duration
-    cron_expression_for_recurrence = local.cron_expression_for_recurrence
-  }
+  # maintenance_schedule = lookup(var.auto_tune_options, "maintenance_schedule", null) != null ? lookup(var.auto_tune_options, "maintenance_schedule") : {
+  #   start_at      = local.start_at
+  #   duration     = local.duration
+  #   cron_expression_for_recurrence = local.cron_expression_for_recurrence
+  # }
 
   # If auto_tune_options is provided, build an auto_tune_options using the default values
   auto_tune_options_default = {
