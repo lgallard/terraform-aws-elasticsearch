@@ -378,6 +378,11 @@ variable "auto_tune_options_desired_state" {
   default = "ENABLED"
 }
 
+# variable "auto_tune_options_maintenance_schedule_enabled" {
+#   type = bool
+#   default = false
+# }
+
 variable "auto_tune_options_start_at" {
   description = "Timestamp in which the maintenance window starts"
   type = string
@@ -394,4 +399,10 @@ variable "auto_tune_options_cron_expression_for_recurrence" {
   description = "Recurrence cron expression for maintenance"
   type = string
   default = null
+}
+
+variable "auto_tune_options_rollback_on_disable" {
+  description = "Behaviour if auto-tune is disabled"
+  type = string
+  default = "NO_ROLLBACK"
 }
