@@ -38,12 +38,12 @@ resource "aws_elasticsearch_domain" "es_domain" {
       dynamic "maintenance_schedule" {
         for_each = auto_tune_options.value.maintenance_schedule
         content {
-          start_at = maintenance_schedule.value.start_at
+          start_at = lookup(maintenance_schedule.value, "start_at")
           duration {
-            value = maintenance_schedule.value.duration.value
-            unit = maintenance_schedule.value.duration.unit
+            value = lookup(maintenance_schedule.value.duration, "value")
+            unit = lookup(maintenance_schedule.value.duration, "unit")
           }
-          cron_expression_for_recurrence = maintenance_schedule.value.cron_expression_for_recurrence
+          cron_expression_for_recurrence = lookup(maintenance_schedule.value, "cron_expression_for_recurrence")
         }
       }
     }
