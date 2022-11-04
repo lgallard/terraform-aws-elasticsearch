@@ -208,13 +208,13 @@ locals {
   advanced_security_options = lookup(local.advanced_security_options_default, "enabled", false) == false ? [] : [local.advanced_security_options_default]
 
   # Create subblock master_user_options
-  auto_tune_state = try(var.auto_tune_options.desired_state, var.auto_tune_options_desired_state, "ENABLED")
+  auto_tune_state = try(var.auto_tune_options_desired_state, var.auto_tune_options.desired_state, "ENABLED")
 
-  maintenance_schedule_enabled = local.auto_tune_state == "ENABLED" && (try(var.auto_tune_options.rollback_on_disable, var.auto_tune_options_rollback_on_disable, "NO_ROLLBACK") == "DEFAULT_ROLLBACK" || try(var.auto_tune_options.maintenance_schedule.start_at, var.auto_tune_options_start_at, null) != null)
+  maintenance_schedule_enabled = local.auto_tune_state == "ENABLED" && (try(var.auto_tune_options_rollback_on_disable, var.auto_tune_options.rollback_on_disable, "NO_ROLLBACK") == "DEFAULT_ROLLBACK" || try(var.auto_tune_options_start_at, var.auto_tune_options.maintenance_schedule.start_at, null) != null)
   
-  start_at = try(var.auto_tune_options.maintenance_schedule.start_at, var.auto_tune_options_start_at, null)
+  start_at = try(var.auto_tune_options_start_at, var.auto_tune_options.maintenance_schedule.start_at, null)
 
-  duration_value = try(var.auto_tune_options.maintenance_schedule.duration.value, var.auto_tune_options_duration_value, null)
+  duration_value = try(var.auto_tune_options_duration_value, var.auto_tune_options.maintenance_schedule.duration.value, null)
 
   duration_unit = "HOURS"
 
@@ -223,7 +223,7 @@ locals {
     unit = local.duration_unit
   }
 
-  cron_expression_for_recurrence = try(var.auto_tune_options.maintenance_schedule.cron_expression_for_recurrence, var.auto_tune_options_cron_expression_for_recurrence, null)
+  cron_expression_for_recurrence = try(var.auto_tune_options_cron_expression_for_recurrence, var.auto_tune_options.maintenance_schedule.cron_expression_for_recurrence, null)
 
   maintenance_schedule = {
     start_at = local.start_at
@@ -231,7 +231,7 @@ locals {
     cron_expression_for_recurrence = local.cron_expression_for_recurrence
   }
 
-  rollback_on_disable = try(var.auto_tune_options.maintenance_schedule.rollback_on_disable, var.auto_tune_options_rollback_on_disable, "NO_ROLLBACK")
+  rollback_on_disable = try(var.auto_tune_options_rollback_on_disable, var.auto_tune_options.maintenance_schedule.rollback_on_disable, "NO_ROLLBACK")
     
   # If auto_tune_options is provided, build an auto_tune_options using the default values
   auto_tune_options_default = {

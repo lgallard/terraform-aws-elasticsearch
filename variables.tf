@@ -386,19 +386,19 @@ variable "auto_tune_options_desired_state" {
 variable "auto_tune_options_start_at" {
   description = "Timestamp in which the maintenance window starts"
   type = string
-  default = null
+  default = "2022-10-25T04:00:00.00Z"
 }
 
 variable "auto_tune_options_duration_value" {
   description = "Duration of the maintenance window"
   type = number
-  default = null
+  default = 5
 }
 
 variable "auto_tune_options_cron_expression_for_recurrence" {
   description = "Recurrence cron expression for maintenance"
   type = string
-  default = null
+  default = "0 4 * * MON"
 }
 
 variable "auto_tune_options_rollback_on_disable" {
