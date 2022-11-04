@@ -371,9 +371,9 @@ variable "auto_tune_options" {
   type        = any
   default     = {
     # desired_state = "ENABLED"
-    # desired_state = "DISABLED"
+    desired_state = "DISABLED"
     # rollback_on_disable = "NO_ROLLBACK"
-    # rollback_on_disable = "DEFAULT_ROLLBACK"
+    rollback_on_disable = "DEFAULT_ROLLBACK"
   }
 }
 
