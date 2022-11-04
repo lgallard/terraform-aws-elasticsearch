@@ -381,14 +381,14 @@ variable "auto_tune_options_desired_state" {
   description = "Whether auto-tune is enabled or not"
   type = string
   # default = "ENABLED"
-  # default = "DISABLED"
+  default = "DISABLED"
 }
 
 variable "auto_tune_options_rollback_on_disable" {
   description = "Behaviour if auto-tune is disabled"
   type = string
   # default = "NO_ROLLBACK"
-  # default = "DEFAULT_ROLLBACK"
+  default = "DEFAULT_ROLLBACK"
 }
 
 variable "auto_tune_options_start_at" {

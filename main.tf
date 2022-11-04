@@ -34,6 +34,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
     for_each = local.auto_tune_options
     content {
       desired_state = lookup(auto_tune_options.value, "desired_state")
+      rollback_on_disable = lookup(auto_tune_options.value, "rollback_on_disable")
 
       # dynamic "maintenance_schedule" {
       #   for_each = auto_tune_options.value.maintenance_schedule
@@ -46,7 +47,6 @@ resource "aws_elasticsearch_domain" "es_domain" {
       #     cron_expression_for_recurrence = lookup(maintenance_schedule.value, "cron_expression_for_recurrence")
       #   }
       # }
-      rollback_on_disable = lookup(auto_tune_options.value, "rollback_on_disable")
     }
   }
 
