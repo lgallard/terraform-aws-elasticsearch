@@ -369,40 +369,42 @@ variable "create_service_link_role" {
 variable "auto_tune_options" {
   description = "Options for auto-tune configuration"
   type        = any
-  default     = {}
+  default     = {
+    desired_state = "ENABLED"
+    # desired_state = "DISABLED"
+    rollback_on_disable = "NO_ROLLBACK"
+    # rollback_on_disable = "DEFAULT_ROLLBACK"
+  }
 }
 
 variable "auto_tune_options_desired_state" {
   description = "Whether auto-tune is enabled or not"
   type = string
   default = "ENABLED"
+  # default = "DISABLED"
 }
-
-# variable "auto_tune_options_maintenance_schedule_enabled" {
-#   type = bool
-#   default = false
-# }
 
 variable "auto_tune_options_start_at" {
   description = "Timestamp in which the maintenance window starts"
   type = string
-  default = "2022-10-25T04:00:00.00Z"
+  default = "2000-01-01T00:00:00.00Z"
 }
 
 variable "auto_tune_options_duration_value" {
   description = "Duration of the maintenance window"
   type = number
-  default = 5
+  default = 10
 }
 
 variable "auto_tune_options_cron_expression_for_recurrence" {
   description = "Recurrence cron expression for maintenance"
   type = string
-  default = "0 4 * * MON"
+  default = "0 0 * * FRI"
 }
 
 variable "auto_tune_options_rollback_on_disable" {
   description = "Behaviour if auto-tune is disabled"
   type = string
   default = "NO_ROLLBACK"
+  # default = "DEFAULT_ROLLBACK"
 }
