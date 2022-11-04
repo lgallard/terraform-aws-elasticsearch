@@ -370,41 +370,52 @@ variable "auto_tune_options" {
   description = "Options for auto-tune configuration"
   type        = any
   default     = {
-    desired_state = "ENABLED"
+    # desired_state = "ENABLED"
     # desired_state = "DISABLED"
-    rollback_on_disable = "NO_ROLLBACK"
+    # rollback_on_disable = "NO_ROLLBACK"
     # rollback_on_disable = "DEFAULT_ROLLBACK"
+    # maintenance_schedule = {
+    #   start_at = "2000-01-01T00:00:00.00Z"
+    #   cron_expression_for_recurrence = "0 0 * * FRI"
+    #   duration = {
+    #     value = 10
+    #     unit = "HOURS"  
+    #   }
+    # }
   }
 }
 
 variable "auto_tune_options_desired_state" {
   description = "Whether auto-tune is enabled or not"
   type = string
-  # default = "ENABLED"
-  default = "DISABLED"
+  default = "ENABLED"
+  # default = "DISABLED"
 }
 
 variable "auto_tune_options_rollback_on_disable" {
   description = "Behaviour if auto-tune is disabled"
   type = string
-  # default = "NO_ROLLBACK"
-  default = "DEFAULT_ROLLBACK"
+  default = "NO_ROLLBACK"
+  # default = "DEFAULT_ROLLBACK"
 }
 
 variable "auto_tune_options_start_at" {
   description = "Timestamp in which the maintenance window starts"
   type = string
-  default = "2000-01-01T00:00:00.00Z"
+  # default = "2000-01-01T00:00:00.00Z"
+  default = null
 }
 
 variable "auto_tune_options_duration_value" {
   description = "Duration of the maintenance window"
   type = number
-  default = 10
+  # default = 10
+  default = null
 }
 
 variable "auto_tune_options_cron_expression_for_recurrence" {
   description = "Recurrence cron expression for maintenance"
   type = string
-  default = "0 0 * * FRI"
+  # default = "0 0 * * FRI"
+  default = null
 }
