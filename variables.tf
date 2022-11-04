@@ -370,18 +370,25 @@ variable "auto_tune_options" {
   description = "Options for auto-tune configuration"
   type        = any
   default     = {
-    # desired_state = "ENABLED"
-    desired_state = "DISABLED"
-    # rollback_on_disable = "NO_ROLLBACK"
-    rollback_on_disable = "DEFAULT_ROLLBACK"
+    desired_state = "ENABLED"
+    # desired_state = "DISABLED"
+    rollback_on_disable = "NO_ROLLBACK"
+    # rollback_on_disable = "DEFAULT_ROLLBACK"
   }
 }
 
 variable "auto_tune_options_desired_state" {
   description = "Whether auto-tune is enabled or not"
   type = string
-  default = "ENABLED"
+  # default = "ENABLED"
   # default = "DISABLED"
+}
+
+variable "auto_tune_options_rollback_on_disable" {
+  description = "Behaviour if auto-tune is disabled"
+  type = string
+  # default = "NO_ROLLBACK"
+  # default = "DEFAULT_ROLLBACK"
 }
 
 variable "auto_tune_options_start_at" {
@@ -400,11 +407,4 @@ variable "auto_tune_options_cron_expression_for_recurrence" {
   description = "Recurrence cron expression for maintenance"
   type = string
   default = "0 0 * * FRI"
-}
-
-variable "auto_tune_options_rollback_on_disable" {
-  description = "Behaviour if auto-tune is disabled"
-  type = string
-  default = "NO_ROLLBACK"
-  # default = "DEFAULT_ROLLBACK"
 }
