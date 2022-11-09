@@ -33,7 +33,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
   dynamic "auto_tune_options" {
     for_each = local.auto_tune_options
     content {
-      desired_state = lookup(auto_tune_options.value, "desired_state")
+      desired_state       = lookup(auto_tune_options.value, "desired_state")
       rollback_on_disable = lookup(auto_tune_options.value, "rollback_on_disable")
 
       dynamic "maintenance_schedule" {
@@ -42,7 +42,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
           start_at = lookup(maintenance_schedule.value, "start_at")
           duration {
             value = lookup(lookup(maintenance_schedule.value, "duration"), "value")
-            unit = lookup(lookup(maintenance_schedule.value, "duration"), "unit")
+            unit  = lookup(lookup(maintenance_schedule.value, "duration"), "unit")
           }
           cron_expression_for_recurrence = lookup(maintenance_schedule.value, "cron_expression_for_recurrence")
         }
@@ -223,13 +223,13 @@ locals {
 
   duration = {
     value = local.duration_value
-    unit = "HOURS"
+    unit  = "HOURS"
   }
 
   maintenance_schedule_default = {
-    start_at = local.start_at
+    start_at                       = local.start_at
     cron_expression_for_recurrence = local.cron_expression_for_recurrence
-    duration = local.duration
+    duration                       = local.duration
   }
 
   # If auto_tune_options is provided, build an auto_tune_options using the default values
@@ -237,7 +237,7 @@ locals {
     desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
 
     rollback_on_disable = lookup(var.auto_tune_options, "rollback_on_disable", null) == null ? var.auto_tune_options_rollback_on_disable : lookup(var.auto_tune_options, "rollback_on_disable")
-    
+
     # maintenance_schedule = local.maintenance_schedule_must_be_enabled ? local.maintenance_schedule : {
     #   start_at = null
     #   cron_expression_for_recurrence = null
