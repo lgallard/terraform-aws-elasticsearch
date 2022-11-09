@@ -237,15 +237,6 @@ locals {
     desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
 
     rollback_on_disable = lookup(var.auto_tune_options, "rollback_on_disable", null) == null ? var.auto_tune_options_rollback_on_disable : lookup(var.auto_tune_options, "rollback_on_disable")
-
-    # maintenance_schedule = local.maintenance_schedule_must_be_enabled ? local.maintenance_schedule : {
-    #   start_at = null
-    #   cron_expression_for_recurrence = null
-    #   duration = {
-    #     value = null
-    #     unit = null
-    #   }
-    # }
   }
 
   auto_tune_options = [local.auto_tune_options_default]
