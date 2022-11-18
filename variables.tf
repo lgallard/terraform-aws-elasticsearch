@@ -389,14 +389,20 @@ variable "auto_tune_options_desired_state" {
   description = "Whether auto-tune is enabled or not"
   type        = string
   default     = "ENABLED"
-  # default = "DISABLED"
+  validation {
+    condition     = can(regex("^(ENABLED|DISABLED)$", var.auto_tune_options_desired_state))
+    error_message = "The value of auto_tune_options_desired_state must be one of: ENABLED, DISABLED."
+  }
 }
 
 variable "auto_tune_options_rollback_on_disable" {
   description = "Behaviour if auto-tune is disabled"
   type        = string
   default     = "NO_ROLLBACK"
-  # default = "DEFAULT_ROLLBACK"
+  validation {
+    condition     = can(regex("^(NO_ROLLBACK|DEFAULT_ROLLBACK)$", var.auto_tune_options_rollback_on_disable))
+    error_message = "The value of auto_tune_options_rollback_on_disable must be one of: NO_ROLLBACK, DEFAULT_ROLLBACK."
+  }
 }
 
 variable "auto_tune_options_start_at" {
@@ -404,18 +410,31 @@ variable "auto_tune_options_start_at" {
   type        = string
   # default = "2000-01-01T00:00:00.00Z"
   default = null
+  validation {
+    condition     = can(regex("^[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{2})?(Z|([-+]{1}[0-9]{2}:[0-9]{2))$", var.auto_tune_options_rollback_on_disable))
+    error_message = "The value of auto_tune_options_start_at must be a valid RFC-3339 timestamp."
+  }
 }
 
 variable "auto_tune_options_duration_value" {
   description = "Duration of the maintenance window"
   type        = number
-  # default = 10
   default = null
 }
 
-variable "auto_tune_options_cron_expression_for_recurrence" {
-  description = "Recurrence cron expression for maintenance"
+variable "auto_tune_options_duration_unit" {
+  description = "Unit for the duration of the maintenance window"
   type        = string
-  # default = "0 0 * * FRI"
+  # default = 10
+  default = "HOURS"
+  validation {
+    condition     = can(regex("^HOURS$", var.auto_tune_options_duration_unit))
+    error_message = "The value of auto_tune_options_duration_unit must be one of: HOURS."
+  }
+}
+
+variable "auto_tune_options_cron_expression_for_recurrence" {
+  description = "Recurrence cron expression for maintenance. A valid cron expression of the form 'minute hour day month day_of_week' is required."
+  type        = string
   default = null
 }
