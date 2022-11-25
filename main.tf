@@ -208,7 +208,8 @@ locals {
 
   advanced_security_options = lookup(local.advanced_security_options_default, "enabled", false) == false ? [] : [local.advanced_security_options_default]
 
-  # Create subblock master_user_options
+  # auto_tune_options
+  # Create subblock maintenance_schedule_options
   maintenance_schedule_must_be_enabled = (lookup(var.auto_tune_options, "desired_state", null) == "ENABLED" || var.auto_tune_options_desired_state == "ENABLED") && (lookup(var.auto_tune_options, "rollback_on_disable", null) == "DEFAULT_ROLLBACK" || var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK")
 
   maintenance_schedule_is_set = lookup(var.auto_tune_options, "maintenance_schedule", null) != null
@@ -232,6 +233,8 @@ locals {
     duration                       = local.duration
   }
 
+  auto_tune_options_maintenance_schedule = local.maintenance_schedule_must_be_enabled ? [local.maintenance_schedule_default] : []
+
   # If auto_tune_options is provided, build an auto_tune_options using the default values
   auto_tune_options_default = {
     desired_state = lookup(var.auto_tune_options, "desired_state", null) == null ? var.auto_tune_options_desired_state : lookup(var.auto_tune_options, "desired_state")
@@ -240,8 +243,6 @@ locals {
   }
 
   auto_tune_options = [local.auto_tune_options_default]
-
-  auto_tune_options_maintenance_schedule = local.maintenance_schedule_must_be_enabled ? [local.maintenance_schedule_default] : []
 
   # If domain_endpoint_options is provided, build an domain_endpoint_options using the default values
   domain_endpoint_options_default = {
