@@ -411,7 +411,7 @@ variable "auto_tune_options_start_at" {
   # default = "2000-01-01T00:00:00.00Z"
   default = null
   validation {
-    condition     = can(regex("^[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{2})?(Z|([-+]{1}[0-9]{2}:[0-9]{2))$", var.auto_tune_options_rollback_on_disable))
+    condition     = can(regex("^[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{2})?(Z|([-+]{1}[0-9]{2}:[0-9]{2))$", var.auto_tune_options_start_at))
     error_message = "The value of auto_tune_options_start_at must be a valid RFC-3339 timestamp."
   }
 }
