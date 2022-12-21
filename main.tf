@@ -214,11 +214,14 @@ locals {
 
   maintenance_schedule_is_set = lookup(var.auto_tune_options, "maintenance_schedule", null) != null
 
-  start_at = local.maintenance_schedule_is_set ? lookup(var.auto_tune_options.maintenance_schedule, "start_at", null) : var.auto_tune_options_start_at
+  # start_at = local.maintenance_schedule_is_set ? lookup(var.auto_tune_options.maintenance_schedule, "start_at", null) : var.auto_tune_options_start_at
+  start_at = local.maintenance_schedule_must_be_enabled ? lookup(var.auto_tune_options.maintenance_schedule, "start_at", null) : var.auto_tune_options_start_at
 
-  cron_expression_for_recurrence = local.maintenance_schedule_is_set ? lookup(var.auto_tune_options.maintenance_schedule, "cron_expression_for_recurrence", null) : var.auto_tune_options_cron_expression_for_recurrence
+  # cron_expression_for_recurrence = local.maintenance_schedule_is_set ? lookup(var.auto_tune_options.maintenance_schedule, "cron_expression_for_recurrence", null) : var.auto_tune_options_cron_expression_for_recurrence
+  cron_expression_for_recurrence = local.maintenance_schedule_must_be_enabled ? lookup(var.auto_tune_options.maintenance_schedule, "cron_expression_for_recurrence", null) : var.auto_tune_options_cron_expression_for_recurrence
 
-  duration_is_set = local.maintenance_schedule_is_set ? lookup(var.auto_tune_options.maintenance_schedule, "duration", null) != null : false
+  # duration_is_set = local.maintenance_schedule_is_set ? lookup(var.auto_tune_options.maintenance_schedule, "duration", null) != null : false
+  duration_is_set = local.maintenance_schedule_must_be_enabled ? lookup(var.auto_tune_options.maintenance_schedule, "duration", null) != null : false
 
   duration_value = local.duration_is_set ? lookup(var.auto_tune_options.maintenance_schedule.duration, "value") : var.auto_tune_options_duration_value
 
